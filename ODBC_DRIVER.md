@@ -1,6 +1,7 @@
 # Use Powershell To Install SQL Anywhere 12 ODBC Driver 
 
-You can use the Powershell script found ad the linke below to install an ODBC driver for OA Desktop to use.
+You can use the Powershell script found at the link below to install an ODBC driver for OA Desktop to use.
+After driver installation, the installed driver will be displayed as 'SQL Anywhere OA' in the ODBC Data Source Administrative panel's 'Drivers' sections.
 
 
 [link to Powershell script](./PrerequisiteHelpers/CreateOdbcProvider.ps1)
