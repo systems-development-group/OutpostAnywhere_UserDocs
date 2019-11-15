@@ -9,7 +9,7 @@ After driver installation, the installed driver will be displayed as 'SQL Anywhe
 
 <hr>
 
-NOTE: if you're going to use this, you should probably download this repo as a .zip file
+NOTE: if you're going to use this, you'll want to download this repo as a .zip file as the script will copy artifacts from [this directory](./bin)
 
 <hr>
 
