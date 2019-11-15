@@ -10,7 +10,7 @@
 
 * PC targeted for install of OA desktop app should be running a currently supported version of Windows 10 that is capable of communicating with Android devices over MTP.
 
-<hr>
+---
 
 **Tablet Prerequisites:**
 
@@ -30,7 +30,7 @@
 
 * Select USB Configuration should be set to MTP (in Developer options)
 
-<hr>
+---
 
 **Instructions**
 
