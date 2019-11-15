@@ -13,7 +13,8 @@ NOTE: if you're going to use this, you should probably download this repo as a .
 <hr>
 
 
-NOTE: You may need to temporarily bypass the PC's execution policy <br>
+NOTE: You may need to temporarily bypass the PC's execution policy 
+<br><br>
     <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-5.1">
         Click here for more info on execution policy
     </a>
