@@ -1,0 +1,2 @@
+FOR EDITING TIPS, SEE THE DOCS:
+https://code.visualstudio.com/Docs/languages/markdown

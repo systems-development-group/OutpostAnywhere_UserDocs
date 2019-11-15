@@ -1,0 +1,5826 @@
+-- *******************************************************************
+-- Copyright 2003-2012 iAnywhere Solutions, Inc.  All rights reserved.
+-- *******************************************************************
+
+IANYWHERE-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    OBJECT-TYPE, NOTIFICATION-TYPE, MODULE-IDENTITY, Integer32, Counter64
+        FROM SNMPv2-SMI
+    OBJECT-GROUP, NOTIFICATION-GROUP
+        FROM SNMPv2-CONF
+    sybase
+        FROM SYBASE-MIB
+    DisplayString, AutonomousType
+        FROM SNMPv2-TC;
+
+sa MODULE-IDENTITY
+    LAST-UPDATED "201012132000Z"
+    ORGANIZATION "iAnywhere Solutions, Inc."
+    CONTACT-INFO
+	  "Graeme Perrow
+	   Sybase, Inc.
+	   445 Wes Graham Way
+	   Waterloo, Ontario
+	   Canada N2L 6R2
+	   Tel: (519) 883-6209
+	   E-mail: graeme.perrow@sybase.com"
+    DESCRIPTION
+      "The MIB module to describe objects for iAnywhere proprietary products."
+
+    ::= { sybase 2 }
+
+-- ------------------------------------------------------------------------
+--
+--   SQL Anywhere related objects
+--
+
+saServer        OBJECT IDENTIFIER ::= { sa 1 }
+saDb            OBJECT IDENTIFIER ::= { sa 2 }
+saAgent         OBJECT IDENTIFIER ::= { sa 3 }
+saMetaData      OBJECT IDENTIFIER ::= { sa 4 }
+saTraps         OBJECT IDENTIFIER ::= { sa 5 }
+saGroups        OBJECT IDENTIFIER ::= { sa 6 }
+
+saSrvStat       OBJECT IDENTIFIER ::= { saServer 1 }
+saSrvProp       OBJECT IDENTIFIER ::= { saServer 2 }
+
+saDbStat        OBJECT IDENTIFIER ::= { saDb 1 }
+saDbProp        OBJECT IDENTIFIER ::= { saDb 2 }
+saDbOpt         OBJECT IDENTIFIER ::= { saDb 3 }
+
+--
+-- Server statistics
+--
+
+srvStatActiveReq                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Active requests"
+	::= { saSrvStat 1 }
+
+srvStatAvailIO                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of available I/O control blocks"
+	::= { saSrvStat 2 }
+
+srvStatBytesReceived            OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Bytes received by server"
+	::= { saSrvStat 3 }
+
+srvStatBytesReceivedUncomp      OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Bytes received after decompression"
+	::= { saSrvStat 4 }
+
+srvStatBytesSent                OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Bytes sent to client"
+	::= { saSrvStat 5 }
+
+srvStatBytesSentUncomp          OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Bytes sent before compression"
+	::= { saSrvStat 6 }
+
+srvStatCacheHits                OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache Hits"
+	::= { saSrvStat 7 }
+
+srvStatCachePinned              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Pinned cache pages"
+	::= { saSrvStat 8 }
+
+srvStatCacheRead                OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache reads"
+	::= { saSrvStat 9 }
+
+srvStatCacheReplacements        OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache replacements"
+	::= { saSrvStat 10 }
+
+srvStatCurrentCacheSize         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Current cache size in kilobytes"
+	::= { saSrvStat 11 }
+
+srvStatDiskRead                 OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Disk reads"
+	::= { saSrvStat 12 }
+
+srvStatFreeBuffers              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Free communication buffers"
+	::= { saSrvStat 13 }
+
+srvStatInternal1                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvStat 14 }
+
+srvStatUniqueClientAddresses    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of unique client network addresses connected"
+	::= { saSrvStat 15 }
+
+srvStatLockedHeapPages          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Heap pages locked in cache"
+	::= { saSrvStat 16 }
+
+srvStatMainHeapBytes            OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Main heap bytes in cache"
+	::= { saSrvStat 17 }
+
+srvStatMainHeapPages            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Main heap pages in cache"
+	::= { saSrvStat 18 }
+
+srvStatMapPhysicalMemoryEng     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Map physical memory"
+	::= { saSrvStat 19 }
+
+srvStatMaxCacheSize             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Maximum cache size in kilobytes"
+	::= { saSrvStat 20 }
+
+srvStatMinCacheSize             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Minimum cache size in kilobytes"
+	::= { saSrvStat 21 }
+
+srvStatMultiPacketsReceived     OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of multi-packet receives"
+	::= { saSrvStat 22 }
+
+srvStatMultiPacketsSent         OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of multi-packet sends"
+	::= { saSrvStat 23 }
+
+srvStatPacketsReceived          OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Packets received by server"
+	::= { saSrvStat 24 }
+
+srvStatPacketsReceivedUncomp    OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Packets received after decompression"
+	::= { saSrvStat 25 }
+
+srvStatPacketsSent              OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Packets sent to client"
+	::= { saSrvStat 26 }
+
+srvStatPacketsSentUncomp        OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Packets sent before compression"
+	::= { saSrvStat 27 }
+
+srvStatPeakCacheSize            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Peak cache size in kilobytes"
+	::= { saSrvStat 28 }
+
+srvStatRemoteputWait            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Remote put waits"
+	::= { saSrvStat 29 }
+
+srvStatReq                      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Requests"
+	::= { saSrvStat 30 }
+
+srvStatSendFail                 OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Failed communication sends"
+	::= { saSrvStat 31 }
+
+srvStatTotalBuffers             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Total communication buffers"
+	::= { saSrvStat 32 }
+
+srvStatUnschReq                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Unscheduled requests"
+	::= { saSrvStat 33 }
+
+srvStatInternal2                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvStat 34 }
+
+srvStatCacheFile                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache pages used to hold data from database files"
+	::= { saSrvStat 35 }
+
+srvStatCacheFileDirty           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache pages that are dirty (needing a write)"
+	::= { saSrvStat 36 }
+
+srvStatCacheAllocated           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache pages that have been allocated for server data structures"
+	::= { saSrvStat 37 }
+
+srvStatCachePanics              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of times the cache manager has failed to find a page to allocate"
+	::= { saSrvStat 38 }
+
+srvStatCacheFree                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of cache pages not being used"
+	::= { saSrvStat 39 }
+
+srvStatCacheScavenges           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of times the cache manager has scavenged for a page to allocate"
+	::= { saSrvStat 40 }
+
+srvStatCacheScavengeVisited     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of pages visited while scavenging for a page to allocate"
+	::= { saSrvStat 41 }
+
+srvStatLockedCursorPages        OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of pages used to keep cursor heaps pinned in memory"
+	::= { saSrvStat 42 }
+
+srvStatQueryHeapPages           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache pages used for query processing (hash and sort operations)"
+	::= { saSrvStat 43 }
+
+srvStatCarverHeapPages          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache pages used for carvers"
+	::= { saSrvStat 44 }
+
+srvStatHeapsRelocatable         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of relocatable heaps"
+	::= { saSrvStat 45 }
+
+srvStatHeapsLocked              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of relocatable heaps currently locked in cache"
+	::= { saSrvStat 46 }
+
+srvStatHeapsQuery               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of heaps used for query processing (hash and sort operations)"
+	::= { saSrvStat 47 }
+
+srvStatHeapsCarver              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of heaps used for carvers"
+	::= { saSrvStat 48 }
+
+srvStatMultiPageAllocs          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of multi-page allocations"
+	::= { saSrvStat 49 }
+
+srvStatRequestsReceived         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Requests received by server"
+	::= { saSrvStat 50 }
+
+srvStatExchangeTasks            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Exchange tasks currently being executed"
+	::= { saSrvStat 51 }
+
+srvStatClientStmtCacheHits      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of prepares not required because of the client statement cache"
+	::= { saSrvStat 52 }
+
+srvStatClientStmtCacheMisses    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of prepares in the client statement cache which were prepared again"
+	::= { saSrvStat 53 }
+
+srvStatQueryMemActiveCurr       OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The current number of requests actively using query memory"
+	::= { saSrvStat 54 }
+
+srvStatQueryMemActiveEst        OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The server's estimate of the steady state average of the number of requests actively using query memory"
+	::= { saSrvStat 55 }
+
+srvStatQueryMemGrantWaiting     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The current number of requests waiting for query memory"
+	::= { saSrvStat 56 }
+
+srvStatQueryMemGrantRequested   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The total number of times any request attempted to acquire query memory"
+	::= { saSrvStat 57 }
+
+srvStatQueryMemGrantWaited      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The total number of times any request waited for query memory"
+	::= { saSrvStat 58 }
+
+srvStatQueryMemGrantFailed      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The total number of times any request waited for query memory and failed to get it"
+	::= { saSrvStat 59 }
+
+srvStatQueryMemGrantGranted     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The number of pages currently granted to requests"
+	::= { saSrvStat 60 }
+
+srvStatQueryMemExtraAvail       OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The amount of memory available to grant beyond the base memory-intensive grant"
+	::= { saSrvStat 61 }
+
+srvStatThreadDeadlocksAvoided   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The number of thread deadlock errors that were avoided by dynamically increasing the multiprogramming level"
+	::= { saSrvStat 62 }
+
+srvStatThreadDeadlocksReported  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The number of thread deadlock errors that were returned to applications"
+	::= { saSrvStat 63 }
+
+srvStatCommit                   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of commit requests"
+	::= { saSrvStat 64 }
+
+srvStatCursor                   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Declared cursors"
+	::= { saSrvStat 65 }
+
+srvStatCursorOpen               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Open cursors"
+	::= { saSrvStat 66 }
+
+srvStatRlbk                     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Rollback requests handled"
+	::= { saSrvStat 67 }
+
+srvStatPrepStmt                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Prepared statements"
+	::= { saSrvStat 68 }
+
+--
+-- Server properties
+--
+
+srvPropInternal3                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 1 }
+
+srvPropCharSet                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CharSet"
+	::= { saSrvProp 2 }
+
+srvPropCommandLine              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CommandLine"
+	::= { saSrvProp 3 }
+
+srvPropCompactPlatformVer       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CompactPlatformVer"
+	::= { saSrvProp 4 }
+
+srvPropCompanyName              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CompanyName"
+	::= { saSrvProp 5 }
+
+srvPropConnsDisabled            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"ConnsDisabled"
+	::= { saSrvProp 6 }
+
+srvPropConsoleLogFile           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ConsoleLogFile"
+	::= { saSrvProp 7 }
+
+srvPropDefaultCollation         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"DefaultCollation"
+	::= { saSrvProp 8 }
+
+srvPropIdleTimeout              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IdleTimeout"
+	::= { saSrvProp 9 }
+
+srvPropIsIQ                     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IsIQ"
+	::= { saSrvProp 10 }
+
+srvPropInternal4                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 11 }
+
+srvPropIsNetworkServer          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IsNetworkServer"
+	::= { saSrvProp 12 }
+
+srvPropIsRuntimeServer          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IsRuntimeServer"
+	::= { saSrvProp 13 }
+
+srvPropInternal5                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 14 }
+
+srvPropLanguage                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Language"
+	::= { saSrvProp 15 }
+
+srvPropLegalCopyright           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LegalCopyright"
+	::= { saSrvProp 16 }
+
+srvPropLegalTrademarks          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LegalTrademarks"
+	::= { saSrvProp 17 }
+
+srvPropLicenseCount             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LicenseCount"
+	::= { saSrvProp 18 }
+
+srvPropLicensedCompany          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LicensedCompany"
+	::= { saSrvProp 19 }
+
+srvPropLicensedUser             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LicensedUser"
+	::= { saSrvProp 20 }
+
+srvPropLicenseType              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LicenseType"
+	::= { saSrvProp 21 }
+
+srvPropLivenessTimeout          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"LivenessTimeout"
+	::= { saSrvProp 22 }
+
+srvPropMachineName              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MachineName"
+	::= { saSrvProp 23 }
+
+srvPropMaxMessage               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MaxMessage"
+	::= { saSrvProp 24 }
+
+srvPropMessageWindowSize        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MessageWindowSize"
+	::= { saSrvProp 25 }
+
+srvPropName                     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Name"
+	::= { saSrvProp 26 }
+
+srvPropNativeProcessorArchitecture OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"NativeProcessorArchitecture"
+	::= { saSrvProp 27 }
+
+srvPropNumPhysicalProcessors    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"NumPhysicalProcessors"
+	::= { saSrvProp 28 }
+
+srvPropInternal6                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 29 }
+
+srvPropOmniIdentifier           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"OmniIdentifier"
+	::= { saSrvProp 30 }
+
+srvPropPageSize                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"PageSize"
+	::= { saSrvProp 31 }
+
+srvPropPlatform                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Platform"
+	::= { saSrvProp 32 }
+
+srvPropPlatformVer              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"PlatformVer"
+	::= { saSrvProp 33 }
+
+srvPropProcessCPU               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProcessCPU"
+	::= { saSrvProp 34 }
+
+srvPropProcessCPUSystem         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProcessCPUSystem"
+	::= { saSrvProp 35 }
+
+srvPropProcessCPUUser           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProcessCPUUser"
+	::= { saSrvProp 36 }
+
+srvPropProcessorArchitecture    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProcessorArchitecture"
+	::= { saSrvProp 37 }
+
+srvPropProductName              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProductName"
+	::= { saSrvProp 38 }
+
+srvPropProductVersion           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProductVersion"
+	::= { saSrvProp 39 }
+
+srvPropQuittingTime             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"QuittingTime"
+	::= { saSrvProp 40 }
+
+srvPropRememberLastStatement    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"RememberLastStatement"
+	::= { saSrvProp 41 }
+
+srvPropRequestFilterConn        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"RequestFilterConn"
+	::= { saSrvProp 42 }
+
+srvPropRequestFilterDB          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"RequestFilterDB"
+	::= { saSrvProp 43 }
+
+srvPropRequestLogFile           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"RequestLogFile"
+	::= { saSrvProp 44 }
+
+srvPropRequestLogging           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"RequestLogging"
+	::= { saSrvProp 45 }
+
+srvPropRequestLogMaxSize        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"RequestLogMaxSize"
+	::= { saSrvProp 46 }
+
+srvPropStartTime                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"StartTime"
+	::= { saSrvProp 47 }
+
+srvPropTempDir                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"TempDir"
+	::= { saSrvProp 48 }
+
+srvPropMultiProgrammingLevel    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MultiProgrammingLevel"
+	::= { saSrvProp 49 }
+
+srvPropTimeZoneAdjustment       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"TimeZoneAdjustment"
+	::= { saSrvProp 50 }
+
+srvPropHttpPorts                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpPorts"
+	::= { saSrvProp 51 }
+
+srvPropHttpsPorts               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpsPorts"
+	::= { saSrvProp 52 }
+
+srvPropProfileFilterConn        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProfileFilterConn"
+	::= { saSrvProp 53 }
+
+srvPropProfileFilterUser        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProfileFilterUser"
+	::= { saSrvProp 54 }
+
+srvPropRequestLogNumFiles       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"RequestLogNumFiles"
+	::= { saSrvProp 55 }
+
+srvPropIsFipsAvailable          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IsFipsAvailable"
+	::= { saSrvProp 56 }
+
+srvPropFipsMode                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"FipsMode"
+	::= { saSrvProp 57 }
+
+srvPropStartDBPermission        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"StartDBPermission"
+	::= { saSrvProp 58 }
+
+srvPropServerName               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ServerName"
+	::= { saSrvProp 59 }
+
+srvPropRememberLastPlan         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"RememberLastPlan"
+	::= { saSrvProp 60 }
+
+srvPropInternal7                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 61 }
+
+srvPropInternal8                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 62 }
+
+srvPropRequestTiming            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"RequestTiming"
+	::= { saSrvProp 63 }
+
+srvPropCacheSizingStatistics    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CacheSizingStatistics"
+	::= { saSrvProp 64 }
+
+srvPropConsoleLogMaxSize        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ConsoleLogMaxSize"
+	::= { saSrvProp 65 }
+
+srvPropDebuggingInformation     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"DebuggingInformation"
+	::= { saSrvProp 66 }
+
+srvPropMessage                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Message"
+	::= { saSrvProp 67 }
+
+srvPropMessageText              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MessageText"
+	::= { saSrvProp 68 }
+
+srvPropMessageTime              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MessageTime"
+	::= { saSrvProp 69 }
+
+srvPropIsRsaAvailable           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IsRsaAvailable"
+	::= { saSrvProp 70 }
+
+srvPropIsEccAvailable           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IsEccAvailable"
+	::= { saSrvProp 71 }
+
+srvPropMaxConnections           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MaxConnections"
+	::= { saSrvProp 72 }
+
+srvPropNumLogicalProcessors     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"NumLogicalProcessors"
+	::= { saSrvProp 73 }
+
+srvPropNumLogicalProcessorsUsed OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"NumLogicalProcessorsUsed"
+	::= { saSrvProp 74 }
+
+srvPropNumPhysicalProcessorsUsed OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"NumPhysicalProcessorsUsed"
+	::= { saSrvProp 75 }
+
+srvPropDefaultNcharCollation    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"DefaultNcharCollation"
+	::= { saSrvProp 76 }
+
+srvPropCollectStatistics        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CollectStatistics"
+	::= { saSrvProp 77 }
+
+srvPropFirstOption              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"FirstOption"
+	::= { saSrvProp 78 }
+
+srvPropLastOption               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LastOption"
+	::= { saSrvProp 79 }
+
+srvPropLastConnectionProperty   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LastConnectionProperty"
+	::= { saSrvProp 80 }
+
+srvPropLastDatabaseProperty     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LastDatabaseProperty"
+	::= { saSrvProp 81 }
+
+srvPropLastServerProperty       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LastServerProperty"
+	::= { saSrvProp 82 }
+
+srvPropWebClientLogging         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"WebClientLogging"
+	::= { saSrvProp 83 }
+
+srvPropWebClientLogFile         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"WebClientLogFile"
+	::= { saSrvProp 84 }
+
+srvPropHttpNumConnections       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpNumConnections"
+	::= { saSrvProp 85 }
+
+srvPropHttpsNumConnections      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpsNumConnections"
+	::= { saSrvProp 86 }
+
+srvPropInternal9                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 87 }
+
+srvPropHttpNumActiveReq         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpNumActiveReq"
+	::= { saSrvProp 88 }
+
+srvPropHttpsNumActiveReq        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpsNumActiveReq"
+	::= { saSrvProp 89 }
+
+srvPropHttpNumSessions          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpNumSessions"
+	::= { saSrvProp 90 }
+
+srvPropQueryMemPages            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"QueryMemPages"
+	::= { saSrvProp 91 }
+
+srvPropQueryMemGrantBase        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"QueryMemGrantBase"
+	::= { saSrvProp 92 }
+
+srvPropQueryMemGrantBaseMI      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"QueryMemGrantBaseMI"
+	::= { saSrvProp 93 }
+
+srvPropQueryMemGrantExtra       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"QueryMemGrantExtra"
+	::= { saSrvProp 94 }
+
+srvPropQueryMemActiveMax        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"QueryMemActiveMax"
+	::= { saSrvProp 95 }
+
+srvPropQueryMemPercentOfCache   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"QueryMemPercentOfCache"
+	::= { saSrvProp 96 }
+
+srvPropMessageCategoryLimit     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MessageCategoryLimit"
+	::= { saSrvProp 97 }
+
+srvPropInternal10               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 98 }
+
+srvPropInternal11               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saSrvProp 99 }
+
+srvPropIsService                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IsService"
+	::= { saSrvProp 100 }
+
+srvPropTcpIpAddresses           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"TcpIpAddresses"
+	::= { saSrvProp 101 }
+
+srvPropHttpAddresses            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpAddresses"
+	::= { saSrvProp 102 }
+
+srvPropHttpsAddresses           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HttpsAddresses"
+	::= { saSrvProp 103 }
+
+srvPropProcessID                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ProcessID"
+	::= { saSrvProp 104 }
+
+srvPropRemoteCapability         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"RemoteCapability"
+	::= { saSrvProp 105 }
+
+srvPropMaxRemoteCapability      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MaxRemoteCapability"
+	::= { saSrvProp 106 }
+
+srvPropEventTypeName            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"EventTypeName"
+	::= { saSrvProp 107 }
+
+srvPropEventTypeDesc            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"EventTypeDesc"
+	::= { saSrvProp 108 }
+
+srvPropMaxEventType             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MaxEventType"
+	::= { saSrvProp 109 }
+
+srvPropIsPortableDevice         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IsPortableDevice"
+	::= { saSrvProp 110 }
+
+srvPropIPAddressMonitorPeriod   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IPAddressMonitorPeriod"
+	::= { saSrvProp 111 }
+
+srvPropServerEdition            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ServerEdition"
+	::= { saSrvProp 112 }
+
+srvPropObjectType               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ObjectType"
+	::= { saSrvProp 113 }
+
+srvPropCurrentMultiProgrammingLevel OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CurrentMultiProgrammingLevel"
+	::= { saSrvProp 114 }
+
+srvPropMinMultiProgrammingLevel OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MinMultiProgrammingLevel"
+	::= { saSrvProp 115 }
+
+srvPropMaxMultiProgrammingLevel OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MaxMultiProgrammingLevel"
+	::= { saSrvProp 116 }
+
+srvPropAutoMultiProgrammingLevel OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"AutoMultiProgrammingLevel"
+	::= { saSrvProp 117 }
+
+srvPropAutoMultiProgrammingLevelStatistics OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"AutoMultiProgrammingLevelStatistics"
+	::= { saSrvProp 118 }
+
+srvPropApproximateCPUTime       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ApproximateCPUTime"
+	::= { saSrvProp 119 }
+
+srvPropConnectedTime            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ConnectedTime"
+	::= { saSrvProp 120 }
+
+srvPropReqCountUnscheduled      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountUnscheduled"
+	::= { saSrvProp 121 }
+
+srvPropReqCountActive           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountActive"
+	::= { saSrvProp 122 }
+
+srvPropReqCountBlockIO          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountBlockIO"
+	::= { saSrvProp 123 }
+
+srvPropReqCountBlockLock        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountBlockLock"
+	::= { saSrvProp 124 }
+
+srvPropReqCountBlockContention  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountBlockContention"
+	::= { saSrvProp 125 }
+
+srvPropReqTimeUnscheduled       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeUnscheduled"
+	::= { saSrvProp 126 }
+
+srvPropReqTimeActive            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeActive"
+	::= { saSrvProp 127 }
+
+srvPropReqTimeBlockIO           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeBlockIO"
+	::= { saSrvProp 128 }
+
+srvPropReqTimeBlockLock         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeBlockLock"
+	::= { saSrvProp 129 }
+
+srvPropReqTimeBlockContention   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeBlockContention"
+	::= { saSrvProp 130 }
+
+srvPropLicenseKey               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LicenseKey"
+	::= { saSrvProp 131 }
+
+
+--
+-- Database statistics
+--
+
+dbStatCacheHits                 OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache Hits"
+	::= { saDbStat 1 }
+
+dbStatCacheReadIndInt           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache index interior reads"
+	::= { saDbStat 2 }
+
+dbStatCacheReadIndLeaf          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache index leaf reads"
+	::= { saDbStat 3 }
+
+dbStatCacheRead                 OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache reads"
+	::= { saDbStat 4 }
+
+dbStatCacheReadTable            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache table reads"
+	::= { saDbStat 5 }
+
+dbStatChkpt                     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoints"
+	::= { saDbStat 6 }
+
+dbStatChkptFlush                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint flushed pages"
+	::= { saDbStat 7 }
+
+dbStatChkptPage                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint log page images saved"
+	::= { saDbStat 8 }
+
+dbStatCheckpointUrgency         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint Urgency"
+	::= { saDbStat 9 }
+
+dbStatInternal1                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbStat 10 }
+
+dbStatInternal2                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbStat 11 }
+
+dbStatCheckpointLogCommitToDisk OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint log commit to disk"
+	::= { saDbStat 12 }
+
+dbStatCheckpointLogPagesInUse   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint log pages in use"
+	::= { saDbStat 13 }
+
+dbStatCheckpointLogPagesRelocated OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint log pages relocated"
+	::= { saDbStat 14 }
+
+dbStatCheckpointLogSavePreimage OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint log save preimage"
+	::= { saDbStat 15 }
+
+dbStatCheckpointLogSize         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint log size in pages"
+	::= { saDbStat 16 }
+
+dbStatCheckpointLogWrites       OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint log disk writes"
+	::= { saDbStat 17 }
+
+dbStatCheckpointLogPagesWritten OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checkpoint log pages written"
+	::= { saDbStat 18 }
+
+dbStatCommitFile                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Commit writes to disk"
+	::= { saDbStat 19 }
+
+dbStatConnCount                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of active connections"
+	::= { saDbStat 20 }
+
+dbStatCurrIO                    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Active disk read/write requests"
+	::= { saDbStat 21 }
+
+dbStatCurrRead                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Active disk read requests"
+	::= { saDbStat 22 }
+
+dbStatCurrWrite                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Active disk write requests"
+	::= { saDbStat 23 }
+
+dbStatDiskReadIndInt            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Disk index interior reads"
+	::= { saDbStat 24 }
+
+dbStatDiskReadIndLeaf           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Disk index leaf reads"
+	::= { saDbStat 25 }
+
+dbStatDiskRead                  OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Disk reads"
+	::= { saDbStat 26 }
+
+dbStatDiskReadTable             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Disk table reads"
+	::= { saDbStat 27 }
+
+dbStatDiskWrite                 OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Disk writes"
+	::= { saDbStat 28 }
+
+dbStatExtendDB                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Extend database file writes"
+	::= { saDbStat 29 }
+
+dbStatExtendTempWrite           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Extend temporary file writes"
+	::= { saDbStat 30 }
+
+dbStatFullCompare               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of comparisons beyond the hash value"
+	::= { saDbStat 31 }
+
+dbStatGetData                   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"GETDATA requests"
+	::= { saDbStat 32 }
+
+dbStatIdleCheck                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Idle I/O checked"
+	::= { saDbStat 33 }
+
+dbStatIdleChkpt                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Idle I/O checkpoints"
+	::= { saDbStat 34 }
+
+dbStatIdleChkTime               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Idle I/O checkpoint time"
+	::= { saDbStat 35 }
+
+dbStatIdleWrite                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Idle I/O writes"
+	::= { saDbStat 36 }
+
+dbStatIndAdd                    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of index insertions"
+	::= { saDbStat 37 }
+
+dbStatIndLookup                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of index lookups"
+	::= { saDbStat 38 }
+
+dbStatIOToRecover               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Recovery I/O Estimate"
+	::= { saDbStat 39 }
+
+dbStatInternal3                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbStat 40 }
+
+dbStatInternal4                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbStat 41 }
+
+dbStatLockTablePages            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Lock table pages"
+	::= { saDbStat 42 }
+
+dbStatInternal5                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbStat 43 }
+
+dbStatMaxIO                     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Maximum active disk read/write requests"
+	::= { saDbStat 44 }
+
+dbStatMaxRead                   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Maximum active disk read requests"
+	::= { saDbStat 45 }
+
+dbStatMaxWrite                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Maximum active disk write requests"
+	::= { saDbStat 46 }
+
+dbStatPageRelocations           OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Page relocations"
+	::= { saDbStat 47 }
+
+dbStatProcedurePages            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Procedure relocatable heap pages"
+	::= { saDbStat 48 }
+
+dbStatQueryCachePages           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Pages used to cache query plans"
+	::= { saDbStat 49 }
+
+dbStatQueryLowMemoryStrategy    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Low memory strategies used by queries"
+	::= { saDbStat 50 }
+
+dbStatQueryRowsMaterialized     OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of rows written to work tables during query processing"
+	::= { saDbStat 51 }
+
+dbStatRecoveryUrgency           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Recovery Urgency"
+	::= { saDbStat 52 }
+
+dbStatLogFreeCommit             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Transaction log group commits"
+	::= { saDbStat 53 }
+
+dbStatLogWrite                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Transaction log page writes"
+	::= { saDbStat 54 }
+
+dbStatRelocatableHeapPages      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Relocatable heap pages"
+	::= { saDbStat 55 }
+
+dbStatRollbackLogPages          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Rollback log pages"
+	::= { saDbStat 56 }
+
+dbStatTempTablePages            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Temporary table pages"
+	::= { saDbStat 57 }
+
+dbStatTriggerPages              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Trigger relocatable heap pages"
+	::= { saDbStat 58 }
+
+dbStatViewPages                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"View relocatable heap pages"
+	::= { saDbStat 59 }
+
+dbStatVersionStorePages         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Version store pages"
+	::= { saDbStat 60 }
+
+dbStatSnapshotCount             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of active snapshots"
+	::= { saDbStat 61 }
+
+dbStatLockCount                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of locks"
+	::= { saDbStat 62 }
+
+dbStatCacheReadWorkTable        OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache work table reads"
+	::= { saDbStat 63 }
+
+dbStatDiskReadWorkTable         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Disk work table reads"
+	::= { saDbStat 64 }
+
+dbStatPrepares                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of statement prepares"
+	::= { saDbStat 65 }
+
+dbStatConnPoolCachedCount       OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of connections disconnected by the application but cached for connection pooling"
+	::= { saDbStat 66 }
+
+dbStatConnPoolHits              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of pooled connections which have been reused"
+	::= { saDbStat 67 }
+
+dbStatConnPoolMisses            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of pooled connections which were cached but could not be reused"
+	::= { saDbStat 68 }
+
+dbStatHttpConnPoolCachedCount   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of database connections cached for connection pooling by HTTP"
+	::= { saDbStat 69 }
+
+dbStatHttpConnPoolHits          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of reused database connections accessed by HTTP that were last used by the same service in the pool"
+	::= { saDbStat 70 }
+
+dbStatHttpConnPoolMisses        OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of database connections that could not be accessed from the pool by HTTP"
+	::= { saDbStat 71 }
+
+dbStatHttpConnPoolSteals        OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of reused database connections accessed by HTTP that were last used by a different service in the pool"
+	::= { saDbStat 72 }
+
+dbStatMirrorServerWaits         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The number of times the server waited more than 500 ms when sending log pages to copy servers"
+	::= { saDbStat 73 }
+
+dbStatBytesReceived             OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Bytes received by server"
+	::= { saDbStat 74 }
+
+dbStatBytesReceivedUncomp       OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Bytes received after decompression"
+	::= { saDbStat 75 }
+
+dbStatBytesSent                 OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Bytes sent to client"
+	::= { saDbStat 76 }
+
+dbStatBytesSentUncomp           OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Bytes sent before compression"
+	::= { saDbStat 77 }
+
+dbStatCarverHeapPages           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache pages used for carvers"
+	::= { saDbStat 78 }
+
+dbStatClientStmtCacheHits       OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of prepares not required because of the client statement cache"
+	::= { saDbStat 79 }
+
+dbStatClientStmtCacheMisses     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of prepares in the client statement cache which were prepared again"
+	::= { saDbStat 80 }
+
+dbStatCommit                    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of commit requests"
+	::= { saDbStat 81 }
+
+dbStatCursor                    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Declared cursors"
+	::= { saDbStat 82 }
+
+dbStatHeapsCarver               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of heaps used for carvers"
+	::= { saDbStat 83 }
+
+dbStatHeapsLocked               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of relocatable heaps currently locked in cache"
+	::= { saDbStat 84 }
+
+dbStatHeapsQuery                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of heaps used for query processing (hash and sort operations)"
+	::= { saDbStat 85 }
+
+dbStatHeapsRelocatable          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Number of relocatable heaps"
+	::= { saDbStat 86 }
+
+dbStatCursorOpen                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Open cursors"
+	::= { saDbStat 87 }
+
+dbStatPacketsReceived           OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Packets received by server"
+	::= { saDbStat 88 }
+
+dbStatPacketsReceivedUncomp     OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Packets received after decompression"
+	::= { saDbStat 89 }
+
+dbStatPacketsSent               OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Packets sent to client"
+	::= { saDbStat 90 }
+
+dbStatPacketsSentUncomp         OBJECT-TYPE
+	SYNTAX			Counter64
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Packets sent before compression"
+	::= { saDbStat 91 }
+
+dbStatQueryHeapPages            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Cache pages used for query processing (hash and sort operations)"
+	::= { saDbStat 92 }
+
+dbStatQueryMemActiveCurr        OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The current number of requests actively using query memory"
+	::= { saDbStat 93 }
+
+dbStatQueryMemGrantFailed       OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The total number of times any request waited for query memory and failed to get it"
+	::= { saDbStat 94 }
+
+dbStatQueryMemGrantGranted      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The number of pages currently granted to requests"
+	::= { saDbStat 95 }
+
+dbStatQueryMemGrantRequested    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The total number of times any request attempted to acquire query memory"
+	::= { saDbStat 96 }
+
+dbStatQueryMemGrantWaited       OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The total number of times any request waited for query memory"
+	::= { saDbStat 97 }
+
+dbStatQueryMemGrantWaiting      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"The current number of requests waiting for query memory"
+	::= { saDbStat 98 }
+
+dbStatRequestsReceived          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Requests received by server"
+	::= { saDbStat 99 }
+
+dbStatRlbk                      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Rollback requests handled"
+	::= { saDbStat 100 }
+
+dbStatPrepStmt                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Prepared statements"
+	::= { saDbStat 101 }
+
+
+--
+-- Database properties
+--
+
+dbPropAlias                     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Alias"
+	::= { saDbProp 1 }
+
+dbPropAuditingTypes             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"AuditingTypes"
+	::= { saDbProp 2 }
+
+dbPropBlankPadding              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"BlankPadding"
+	::= { saDbProp 3 }
+
+dbPropInternal6                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 4 }
+
+dbPropCapabilities              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Capabilities"
+	::= { saDbProp 5 }
+
+dbPropCaseSensitive             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CaseSensitive"
+	::= { saDbProp 6 }
+
+dbPropInternal7                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 7 }
+
+dbPropCharSet                   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CharSet"
+	::= { saDbProp 8 }
+
+dbPropChecksum                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Checksum"
+	::= { saDbProp 9 }
+
+dbPropInternal8                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 10 }
+
+dbPropCollation                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Collation"
+	::= { saDbProp 11 }
+
+dbPropInternal9                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 12 }
+
+dbPropInternal10                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 13 }
+
+dbPropCurrentRedoPos            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CurrentRedoPos"
+	::= { saDbProp 14 }
+
+dbPropDBFileFragments           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"DBFileFragments"
+	::= { saDbProp 15 }
+
+dbPropDriveType                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"DriveType"
+	::= { saDbProp 16 }
+
+dbPropEncryption                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Encryption"
+	::= { saDbProp 17 }
+
+dbPropFile                      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"File"
+	::= { saDbProp 18 }
+
+dbPropFileSize                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"FileSize"
+	::= { saDbProp 19 }
+
+dbPropInternal11                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 20 }
+
+dbPropInternal12                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 21 }
+
+dbPropFreePages                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"FreePages"
+	::= { saDbProp 22 }
+
+dbPropGlobalDBID                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"GlobalDBID"
+	::= { saDbProp 23 }
+
+dbPropInternal13                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 24 }
+
+dbPropInternal14                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 25 }
+
+dbPropInternal15                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 26 }
+
+dbPropIQStore                   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IQStore"
+	::= { saDbProp 27 }
+
+dbPropInternal16                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 28 }
+
+dbPropLanguage                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Language"
+	::= { saDbProp 29 }
+
+dbPropInternal17                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 30 }
+
+dbPropLogFileFragments          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LogFileFragments"
+	::= { saDbProp 31 }
+
+dbPropLogMirrorName             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LogMirrorName"
+	::= { saDbProp 32 }
+
+dbPropLogName                   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LogName"
+	::= { saDbProp 33 }
+
+dbPropLTMGeneration             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LTMGeneration"
+	::= { saDbProp 34 }
+
+dbPropLTMTrunc                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LTMTrunc"
+	::= { saDbProp 35 }
+
+dbPropMultiByteCharSet          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MultiByteCharSet"
+	::= { saDbProp 36 }
+
+dbPropName                      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Name"
+	::= { saDbProp 37 }
+
+dbPropInternal18                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 38 }
+
+dbPropPageSize                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"PageSize"
+	::= { saDbProp 39 }
+
+dbPropInternal19                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 40 }
+
+dbPropProcedureProfiling        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"ProcedureProfiling"
+	::= { saDbProp 41 }
+
+dbPropReadOnly                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReadOnly"
+	::= { saDbProp 42 }
+
+dbPropRemoteTrunc               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"RemoteTrunc"
+	::= { saDbProp 43 }
+
+dbPropInternal20                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 44 }
+
+dbPropInternal21                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 45 }
+
+dbPropInternal22                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 46 }
+
+dbPropSyncTrunc                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"SyncTrunc"
+	::= { saDbProp 47 }
+
+dbPropInternal23                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 48 }
+
+dbPropInternal24                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 49 }
+
+dbPropTempFileName              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"TempFileName"
+	::= { saDbProp 50 }
+
+dbPropInternal25                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 51 }
+
+dbPropInternal26                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 52 }
+
+dbPropInternal27                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 53 }
+
+dbPropNextScheduleTime          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"NextScheduleTime"
+	::= { saDbProp 54 }
+
+dbPropIdentitySignature         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IdentitySignature"
+	::= { saDbProp 55 }
+
+dbPropInternal28                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 56 }
+
+dbPropSnapshotIsolationState    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"SnapshotIsolationState"
+	::= { saDbProp 57 }
+
+dbPropConnsDisabled             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ConnsDisabled"
+	::= { saDbProp 58 }
+
+dbPropPartnerState              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"PartnerState"
+	::= { saDbProp 59 }
+
+dbPropArbiterState              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ArbiterState"
+	::= { saDbProp 60 }
+
+dbPropMirrorState               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MirrorState"
+	::= { saDbProp 61 }
+
+dbPropAlternateServerName       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"AlternateServerName"
+	::= { saDbProp 62 }
+
+dbPropEncryptionScope           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"EncryptionScope"
+	::= { saDbProp 63 }
+
+dbPropNcharCharSet              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"NcharCharSet"
+	::= { saDbProp 64 }
+
+dbPropNcharCollation            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"NcharCollation"
+	::= { saDbProp 65 }
+
+dbPropAccentSensitive           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"AccentSensitive"
+	::= { saDbProp 66 }
+
+dbPropSendingTracingTo          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"SendingTracingTo"
+	::= { saDbProp 67 }
+
+dbPropReceivingTracingFrom      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReceivingTracingFrom"
+	::= { saDbProp 68 }
+
+dbPropIOParallelism             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"IOParallelism"
+	::= { saDbProp 69 }
+
+dbPropJavaVM                    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"JavaVM"
+	::= { saDbProp 70 }
+
+dbPropDatabaseCleaner           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"DatabaseCleaner"
+	::= { saDbProp 71 }
+
+dbPropHasCollationTailoring     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HasCollationTailoring"
+	::= { saDbProp 72 }
+
+dbPropCatalogCollation          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"CatalogCollation"
+	::= { saDbProp 73 }
+
+dbPropHasEndianSwapFix          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HasEndianSwapFix"
+	::= { saDbProp 74 }
+
+dbPropAlternateMirrorServerName OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"AlternateMirrorServerName"
+	::= { saDbProp 75 }
+
+dbPropOptionWatchList           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"OptionWatchList"
+	::= { saDbProp 76 }
+
+dbPropOptionWatchAction         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"OptionWatchAction"
+	::= { saDbProp 77 }
+
+dbPropMirrorMode                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MirrorMode"
+	::= { saDbProp 78 }
+
+dbPropHasNCHARLegacyCollationFix OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"HasNCHARLegacyCollationFix"
+	::= { saDbProp 79 }
+
+dbPropInternal29                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 80 }
+
+dbPropAuthenticated             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Authenticated"
+	::= { saDbProp 81 }
+
+dbPropSynchronizationSchemaChangeActive OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"SynchronizationSchemaChangeActive"
+	::= { saDbProp 82 }
+
+dbPropLastCheckpointTime        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LastCheckpointTime"
+	::= { saDbProp 83 }
+
+dbPropMirrorServerState         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MirrorServerState"
+	::= { saDbProp 84 }
+
+dbPropDriveBus                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"DriveBus"
+	::= { saDbProp 85 }
+
+dbPropDriveModel                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"DriveModel"
+	::= { saDbProp 86 }
+
+dbPropInternal30                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 87 }
+
+dbPropMirrorRole                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"MirrorRole"
+	::= { saDbProp 88 }
+
+dbPropWriteChecksum             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"WriteChecksum"
+	::= { saDbProp 89 }
+
+dbPropApproximateCPUTime        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ApproximateCPUTime"
+	::= { saDbProp 90 }
+
+dbPropConnectedTime             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ConnectedTime"
+	::= { saDbProp 91 }
+
+dbPropReqCountUnscheduled       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountUnscheduled"
+	::= { saDbProp 92 }
+
+dbPropReqCountActive            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountActive"
+	::= { saDbProp 93 }
+
+dbPropReqCountBlockIO           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountBlockIO"
+	::= { saDbProp 94 }
+
+dbPropReqCountBlockLock         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountBlockLock"
+	::= { saDbProp 95 }
+
+dbPropReqCountBlockContention   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqCountBlockContention"
+	::= { saDbProp 96 }
+
+dbPropReqTimeUnscheduled        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeUnscheduled"
+	::= { saDbProp 97 }
+
+dbPropReqTimeActive             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeActive"
+	::= { saDbProp 98 }
+
+dbPropReqTimeBlockIO            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeBlockIO"
+	::= { saDbProp 99 }
+
+dbPropReqTimeBlockLock          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeBlockLock"
+	::= { saDbProp 100 }
+
+dbPropReqTimeBlockContention    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"ReqTimeBlockContention"
+	::= { saDbProp 101 }
+
+dbPropInternal31                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbProp 102 }
+
+dbPropLastCommitRedoPos         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LastCommitRedoPos"
+	::= { saDbProp 103 }
+
+dbPropLastWrittenRedoPos        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LastWrittenRedoPos"
+	::= { saDbProp 104 }
+
+dbPropLastSyncedRedoPos         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"LastSyncedRedoPos"
+	::= { saDbProp 105 }
+
+
+--
+-- Database options
+--
+
+dbOptAllowNullsByDefault        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"allow nulls by default"
+	::= { saDbOpt 1 }
+
+dbOptAnsinull                   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"ansinull"
+	::= { saDbOpt 2 }
+
+dbOptAnsiBlanks                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"ansi blanks"
+	::= { saDbOpt 3 }
+
+dbOptAnsiCloseCursorsOnRollback OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"ansi close cursors on rollback"
+	::= { saDbOpt 4 }
+
+dbOptInternal32                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 5 }
+
+dbOptAnsiPermissions            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"ansi permissions"
+	::= { saDbOpt 6 }
+
+dbOptAnsiUpdateConstraints      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"ansi update constraints"
+	::= { saDbOpt 7 }
+
+dbOptAuditing                   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"auditing"
+	::= { saDbOpt 8 }
+
+dbOptAuditingOptions            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"auditing options"
+	::= { saDbOpt 9 }
+
+dbOptInternal33                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 10 }
+
+dbOptBackgroundPriority         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"background priority"
+	::= { saDbOpt 11 }
+
+dbOptBlocking                   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"blocking"
+	::= { saDbOpt 12 }
+
+dbOptBlockingTimeout            OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"blocking timeout"
+	::= { saDbOpt 13 }
+
+dbOptChained                    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"chained"
+	::= { saDbOpt 14 }
+
+dbOptCheckpointTime             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"checkpoint time"
+	::= { saDbOpt 15 }
+
+dbOptCisOption                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"cis option"
+	::= { saDbOpt 16 }
+
+dbOptCisRowsetSize              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"cis rowset size"
+	::= { saDbOpt 17 }
+
+dbOptCloseOnEndtrans            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"close on endtrans"
+	::= { saDbOpt 18 }
+
+dbOptConnectionAuthentication   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"connection authentication"
+	::= { saDbOpt 19 }
+
+dbOptContinueAfterRaiserror     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"continue after raiserror"
+	::= { saDbOpt 20 }
+
+dbOptConversionError            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"conversion error"
+	::= { saDbOpt 21 }
+
+dbOptCooperativeCommits         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"cooperative commits"
+	::= { saDbOpt 22 }
+
+dbOptCooperativeCommitTimeout   OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"cooperative commit timeout"
+	::= { saDbOpt 23 }
+
+dbOptDatabaseAuthentication     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"database authentication"
+	::= { saDbOpt 24 }
+
+dbOptDateFormat                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"date format"
+	::= { saDbOpt 25 }
+
+dbOptDateOrder                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"date order"
+	::= { saDbOpt 26 }
+
+dbOptDebugMessages              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"debug messages"
+	::= { saDbOpt 27 }
+
+dbOptDedicatedTask              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"dedicated task"
+	::= { saDbOpt 28 }
+
+dbOptDefaultTimestampIncrement  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"default timestamp increment"
+	::= { saDbOpt 29 }
+
+dbOptDelayedCommits             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"delayed commits"
+	::= { saDbOpt 30 }
+
+dbOptDelayedCommitTimeout       OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"delayed commit timeout"
+	::= { saDbOpt 31 }
+
+dbOptDivideByZeroError          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"divide by zero error"
+	::= { saDbOpt 32 }
+
+dbOptEscapeCharacter            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"escape character"
+	::= { saDbOpt 33 }
+
+dbOptExcludeOperators           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"exclude operators"
+	::= { saDbOpt 34 }
+
+dbOptExtendedJoinSyntax         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"extended join syntax"
+	::= { saDbOpt 35 }
+
+dbOptFireTriggers               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"fire triggers"
+	::= { saDbOpt 36 }
+
+dbOptFirstDayOfWeek             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"first day of week"
+	::= { saDbOpt 37 }
+
+dbOptInternal34                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 38 }
+
+dbOptForceViewCreation          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"force view creation"
+	::= { saDbOpt 39 }
+
+dbOptForXmlNullTreatment        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"for xml null treatment"
+	::= { saDbOpt 40 }
+
+dbOptGlobalDatabaseId           OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"global database id"
+	::= { saDbOpt 41 }
+
+dbOptIsolationLevel             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"isolation level"
+	::= { saDbOpt 42 }
+
+dbOptInternal35                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 43 }
+
+dbOptInternal36                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 44 }
+
+dbOptInternal37                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 45 }
+
+dbOptInternal38                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 46 }
+
+dbOptLockRejectedRows           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"lock rejected rows"
+	::= { saDbOpt 47 }
+
+dbOptLoginMode                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"login mode"
+	::= { saDbOpt 48 }
+
+dbOptLoginProcedure             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"login procedure"
+	::= { saDbOpt 49 }
+
+dbOptInternal39                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 50 }
+
+dbOptInternal40                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 51 }
+
+dbOptMaxCursorCount             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max cursor count"
+	::= { saDbOpt 52 }
+
+dbOptMaxHashSize                OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max hash size"
+	::= { saDbOpt 53 }
+
+dbOptMaxPlansCached             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max plans cached"
+	::= { saDbOpt 54 }
+
+dbOptMaxRecursiveIterations     OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max recursive iterations"
+	::= { saDbOpt 55 }
+
+dbOptMaxStatementCount          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max statement count"
+	::= { saDbOpt 56 }
+
+dbOptInternal41                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 57 }
+
+dbOptMinPasswordLength          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"min password length"
+	::= { saDbOpt 58 }
+
+dbOptInternal42                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 59 }
+
+dbOptNearestCentury             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"nearest century"
+	::= { saDbOpt 60 }
+
+dbOptNonKeywords                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"non keywords"
+	::= { saDbOpt 61 }
+
+dbOptOdbcDistinguishCharAndVarchar OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"odbc distinguish char and varchar"
+	::= { saDbOpt 62 }
+
+dbOptOnCharsetConversionFailure OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"on charset conversion failure"
+	::= { saDbOpt 63 }
+
+dbOptOnTsqlError                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"on tsql error"
+	::= { saDbOpt 64 }
+
+dbOptInternal43                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 65 }
+
+dbOptOptimizationGoal           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"optimization goal"
+	::= { saDbOpt 66 }
+
+dbOptOptimizationLevel          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"optimization level"
+	::= { saDbOpt 67 }
+
+dbOptInternal44                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 68 }
+
+dbOptOptimizationWorkload       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"optimization workload"
+	::= { saDbOpt 69 }
+
+dbOptPinnedCursorPercentOfCache OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"pinned cursor percent of cache"
+	::= { saDbOpt 70 }
+
+dbOptPrecision                  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"precision"
+	::= { saDbOpt 71 }
+
+dbOptPrefetch                   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"prefetch"
+	::= { saDbOpt 72 }
+
+dbOptPreserveSourceFormat       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"preserve source format"
+	::= { saDbOpt 73 }
+
+dbOptPreventArticlePkeyUpdate   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"prevent article pkey update"
+	::= { saDbOpt 74 }
+
+dbOptInternal45                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 75 }
+
+dbOptQuotedIdentifier           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"quoted identifier"
+	::= { saDbOpt 76 }
+
+dbOptReadPastDeleted            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"read past deleted"
+	::= { saDbOpt 77 }
+
+dbOptRecoveryTime               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"recovery time"
+	::= { saDbOpt 78 }
+
+dbOptReplicateAll               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"replicate all"
+	::= { saDbOpt 79 }
+
+dbOptReturnDateTimeAsString     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"return date time as string"
+	::= { saDbOpt 80 }
+
+dbOptInternal46                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 81 }
+
+dbOptInternal47                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 82 }
+
+dbOptRowCounts                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"row counts"
+	::= { saDbOpt 83 }
+
+dbOptScale                      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"scale"
+	::= { saDbOpt 84 }
+
+dbOptSortCollation              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"sort collation"
+	::= { saDbOpt 85 }
+
+dbOptSqlFlaggerErrorLevel       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"sql flagger error level"
+	::= { saDbOpt 86 }
+
+dbOptSqlFlaggerWarningLevel     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"sql flagger warning level"
+	::= { saDbOpt 87 }
+
+dbOptStringRtruncation          OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"string rtruncation"
+	::= { saDbOpt 88 }
+
+dbOptSubsumeRowLocks            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"subsume row locks"
+	::= { saDbOpt 89 }
+
+dbOptSuppressTdsDebugging       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"suppress tds debugging"
+	::= { saDbOpt 90 }
+
+dbOptTdsEmptyStringIsNull       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"tds empty string is null"
+	::= { saDbOpt 91 }
+
+dbOptInternal48                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 92 }
+
+dbOptInternal49                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 93 }
+
+dbOptInternal50                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 94 }
+
+dbOptTimestampFormat            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"timestamp format"
+	::= { saDbOpt 95 }
+
+dbOptTimeFormat                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"time format"
+	::= { saDbOpt 96 }
+
+dbOptTimeZoneAdjustment         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"time zone adjustment"
+	::= { saDbOpt 97 }
+
+dbOptInternal51                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 98 }
+
+dbOptTruncateTimestampValues    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"truncate timestamp values"
+	::= { saDbOpt 99 }
+
+dbOptInternal52                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 100 }
+
+dbOptInternal53                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 101 }
+
+dbOptTsqlVariables              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"tsql variables"
+	::= { saDbOpt 102 }
+
+dbOptUpdateStatistics           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"update statistics"
+	::= { saDbOpt 103 }
+
+dbOptUpgradeDatabaseCapability  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"upgrade database capability"
+	::= { saDbOpt 104 }
+
+dbOptUserEstimates              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"user estimates"
+	::= { saDbOpt 105 }
+
+dbOptWaitForCommit              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"wait for commit"
+	::= { saDbOpt 106 }
+
+dbOptTempSpaceLimitCheck        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"temp space limit check"
+	::= { saDbOpt 107 }
+
+dbOptRemoteIdleTimeout          OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"remote idle timeout"
+	::= { saDbOpt 108 }
+
+dbOptAnsiSubstring              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"ansi substring"
+	::= { saDbOpt 109 }
+
+dbOptOdbcDescribeBinaryAsVarbinary OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"odbc describe binary as varbinary"
+	::= { saDbOpt 110 }
+
+dbOptRollbackOnDeadlock         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"rollback on deadlock"
+	::= { saDbOpt 111 }
+
+dbOptIntegratedServerName       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"integrated server name"
+	::= { saDbOpt 112 }
+
+dbOptLogDeadlocks               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"log deadlocks"
+	::= { saDbOpt 113 }
+
+dbOptInternal54                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 114 }
+
+dbOptWebserviceNamespaceHost    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"webservice namespace host"
+	::= { saDbOpt 115 }
+
+dbOptMaxQueryTasks              OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max query tasks"
+	::= { saDbOpt 116 }
+
+dbOptRequestTimeout             OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"request timeout"
+	::= { saDbOpt 117 }
+
+dbOptSynchronizeMirrorOnCommit  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"synchronize mirror on commit"
+	::= { saDbOpt 118 }
+
+dbOptHttpSessionTimeout         OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"http session timeout"
+	::= { saDbOpt 119 }
+
+dbOptUuidHasHyphens             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"uuid has hyphens"
+	::= { saDbOpt 120 }
+
+dbOptAllowSnapshotIsolation     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"allow snapshot isolation"
+	::= { saDbOpt 121 }
+
+dbOptVerifyPasswordFunction     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"verify password function"
+	::= { saDbOpt 122 }
+
+dbOptDefaultDbspace             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"default dbspace"
+	::= { saDbOpt 123 }
+
+dbOptCollectStatisticsOnDmlUpdates OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"collect statistics on dml updates"
+	::= { saDbOpt 124 }
+
+dbOptInternal55                 OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 125 }
+
+dbOptJavaLocation               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"java location"
+	::= { saDbOpt 126 }
+
+dbOptOemString                  OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"oem string"
+	::= { saDbOpt 127 }
+
+dbOptMaxTempSpace               OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max temp space"
+	::= { saDbOpt 128 }
+
+dbOptSecureFeatureKey           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"secure feature key"
+	::= { saDbOpt 129 }
+
+dbOptMaterializedViewOptimization OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"materialized view optimization"
+	::= { saDbOpt 130 }
+
+dbOptUpdatableStatementIsolation OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"updatable statement isolation"
+	::= { saDbOpt 131 }
+
+dbOptTsqlOuterJoins             OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"tsql outer joins"
+	::= { saDbOpt 132 }
+
+dbOptPostLoginProcedure         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"post login procedure"
+	::= { saDbOpt 133 }
+
+dbOptConnAuditing               OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"conn auditing"
+	::= { saDbOpt 134 }
+
+dbOptInternal56                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 135 }
+
+dbOptJavaVmOptions              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"java vm options"
+	::= { saDbOpt 136 }
+
+dbOptInternal57                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 137 }
+
+dbOptMaxClientStatementsCached  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max client statements cached"
+	::= { saDbOpt 138 }
+
+dbOptQueryMemTimeout            OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"query mem timeout"
+	::= { saDbOpt 139 }
+
+dbOptAllowReadClientFile        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"allow read client file"
+	::= { saDbOpt 140 }
+
+dbOptAllowWriteClientFile       OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"allow write client file"
+	::= { saDbOpt 141 }
+
+dbOptPriority                   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"priority"
+	::= { saDbOpt 142 }
+
+dbOptMaxPriority                OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"max priority"
+	::= { saDbOpt 143 }
+
+dbOptProgressMessages           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"progress messages"
+	::= { saDbOpt 144 }
+
+dbOptBlockingOthersTimeout      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"blocking others timeout"
+	::= { saDbOpt 145 }
+
+dbOptInternal58                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 146 }
+
+dbOptTimestampWithTimeZoneFormat OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"timestamp with time zone format"
+	::= { saDbOpt 147 }
+
+dbOptHttpConnectionPoolTimeout  OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"http connection pool timeout"
+	::= { saDbOpt 148 }
+
+dbOptHttpConnectionPoolBasesize OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"http connection pool basesize"
+	::= { saDbOpt 149 }
+
+dbOptStGeometryDescribeType     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"st geometry describe type"
+	::= { saDbOpt 150 }
+
+dbOptStGeometryAstextFormat     OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"st geometry astext format"
+	::= { saDbOpt 151 }
+
+dbOptStGeometryAsbinaryFormat   OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"st geometry asbinary format"
+	::= { saDbOpt 152 }
+
+dbOptStGeometryAsxmlFormat      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"st geometry asxml format"
+	::= { saDbOpt 153 }
+
+dbOptReservedKeywords           OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"reserved keywords"
+	::= { saDbOpt 154 }
+
+dbOptStGeometryOnInvalid        OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"st geometry on invalid"
+	::= { saDbOpt 155 }
+
+dbOptInternal59                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 156 }
+
+dbOptInternal60                 OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+		"Internal"
+	::= { saDbOpt 157 }
+
+dbOptJavaClassPath              OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"java class path"
+	::= { saDbOpt 158 }
+
+dbOptStGeometryInterpolation    OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+		"st geometry interpolation"
+	::= { saDbOpt 159 }
+
+
+--
+-- Agent
+--
+
+saVersion                      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+	    "The version of the SA SNMP extension agent software."
+	::= { saAgent 1 }
+
+saDBConnStr                    OBJECT-TYPE
+ 	SYNTAX                  DisplayString
+ 	MAX-ACCESS              read-only
+ 	STATUS                  current
+ 	DESCRIPTION
+	    "The connection string used to connect to this database."
+ 	::= { saAgent 2 }
+
+
+saConnected                    OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+	    "Returns 1 if the agent is connected to this database, and 0
+             if not. Setting the value to 1 or 0 makes the agent connect
+             or disconnect."
+	::= { saAgent 3 }
+
+saStarted                      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+	    "Returns 1 if the database is running, and 0 if not. Setting
+             the value to 1 or 0 makes the agent start or stop the
+             database. (Stopping the database also causes a disconnect.)"
+	::= { saAgent 4 }
+
+saProc                         OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+	    "Getting this variable returns an empty string. Setting this
+             variable to a string 'foo' will attempt to execute procedure
+             'foo'. Any result set or return value is discarded."
+	::= { saAgent 5 }
+
+saRestart                      OBJECT-TYPE
+	SYNTAX			Integer32
+	MAX-ACCESS		read-write
+	STATUS			current
+	DESCRIPTION
+	    "Getting this variable returns 0. Setting this variable to any
+             non-zero value tells the agent to effectively restart itself. All
+             connections are closed, and the sasnmp.ini file is re-read."
+	::= { saAgent 6 }
+
+saInifile                      OBJECT-TYPE
+	SYNTAX			DisplayString
+	MAX-ACCESS		read-only
+	STATUS			current
+	DESCRIPTION
+	    "The fully-qualified filename of the .ini file used by the SA SNMP
+             extension agent."
+	::= { saAgent 7 }
+
+--
+-- Metadata
+--
+
+saSrvMetaData	OBJECT IDENTIFIER ::= { saMetaData 1 }
+saDbMetaData	OBJECT IDENTIFIER ::= { saMetaData 2 }
+
+-- Server statistics
+
+saSrvStatMetaDataTable         OBJECT-TYPE
+    SYNTAX                      SEQUENCE OF SaSrvStatMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "The table of server statistics and properties available"
+    ::= { saSrvMetaData 1 }
+
+saSrvStatMetaDataEntry         OBJECT-TYPE
+    SYNTAX                      SaSrvStatMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "An entry for a single server statistic or property."
+    INDEX { saSrvStatIndex }
+    ::= { saSrvStatMetaDataTable 1 }
+
+SaSrvStatMetaDataEntry ::=
+    SEQUENCE {
+	saSrvStatIndex         Integer32,
+	saSrvStatObjType       INTEGER,
+	saSrvStatType          INTEGER,
+	saSrvStatOID           AutonomousType,
+	saSrvStatName          DisplayString
+    }
+
+saSrvStatIndex                 OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "Index of value."
+    ::= { saSrvStatMetaDataEntry 1 }
+
+saSrvStatObjType               OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           server(1),
+				   database(2)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of object: (1) server, (2) database. Always 1 for this table."
+    ::= { saSrvStatMetaDataEntry 2 }
+
+saSrvStatType                  OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           statistic(1),
+				   property(2),
+				   option(3)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of value: (1) statistic, (2) property, (3) option.
+         Always 1 for this table."
+    ::= { saSrvStatMetaDataEntry 3 }
+
+saSrvStatOID                   OBJECT-TYPE
+    SYNTAX                      AutonomousType
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "OID of the entry in the SA MIB."
+    ::= { saSrvStatMetaDataEntry 4 }
+
+saSrvStatName                  OBJECT-TYPE
+    SYNTAX                      DisplayString
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Name of the statistic, property, or option."
+    ::= { saSrvStatMetaDataEntry 5 }
+
+-- Server properties
+
+saSrvPropMetaDataTable         OBJECT-TYPE
+    SYNTAX                      SEQUENCE OF SaSrvPropMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "The table of server statistics and properties available"
+    ::= { saSrvMetaData 2 }
+
+saSrvPropMetaDataEntry         OBJECT-TYPE
+    SYNTAX                      SaSrvPropMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "An entry for a single server statistic or property."
+    INDEX { saSrvPropIndex }
+    ::= { saSrvPropMetaDataTable 1 }
+
+SaSrvPropMetaDataEntry ::=
+    SEQUENCE {
+	saSrvPropIndex         Integer32,
+	saSrvPropObjType       INTEGER,
+	saSrvPropType          INTEGER,
+	saSrvPropOID           AutonomousType,
+	saSrvPropName          DisplayString
+    }
+
+saSrvPropIndex                 OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "Index of value."
+    ::= { saSrvPropMetaDataEntry 1 }
+
+saSrvPropObjType               OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           server(1),
+				   database(2)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of object: (1) server, (2) database. Always 1 for this table."
+    ::= { saSrvPropMetaDataEntry 2 }
+
+saSrvPropType                  OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           statistic(1),
+				   property(2),
+				   option(3)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of value: (1) statistic, (2) property, (3) option.
+         Always 2 for this table."
+    ::= { saSrvPropMetaDataEntry 3 }
+
+saSrvPropOID                   OBJECT-TYPE
+    SYNTAX                      AutonomousType
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "OID of the entry in the SA MIB."
+    ::= { saSrvPropMetaDataEntry 4 }
+
+saSrvPropName                  OBJECT-TYPE
+    SYNTAX                      DisplayString
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Name of the statistic, property, or option."
+    ::= { saSrvPropMetaDataEntry 5 }
+
+
+-- Database statistics
+
+saDbStatMetaDataTable          OBJECT-TYPE
+    SYNTAX                      SEQUENCE OF SaDbStatMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "The table of server statistics and properties available"
+    ::= { saDbMetaData 1 }
+
+saDbStatMetaDataEntry          OBJECT-TYPE
+    SYNTAX                      SaDbStatMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "An entry for a single server statistic or property."
+    INDEX { saDbStatIndex }
+    ::= { saDbStatMetaDataTable 1 }
+
+SaDbStatMetaDataEntry ::=
+    SEQUENCE {
+	saDbStatIndex          Integer32,
+	saDbStatObjType        INTEGER,
+	saDbStatType           INTEGER,
+	saDbStatOID            AutonomousType,
+	saDbStatName           DisplayString
+    }
+
+saDbStatIndex                  OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "Index of value."
+    ::= { saDbStatMetaDataEntry 1 }
+
+saDbStatObjType                OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           server(1),
+				   database(2)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of object: (1) server, (2) database. Always 2 for this table."
+    ::= { saDbStatMetaDataEntry 2 }
+
+saDbStatType                   OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           statistic(1),
+				   property(2),
+				   option(3)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of value: (1) statistic, (2) property, (3) option.
+         Always 1 for this table."
+    ::= { saDbStatMetaDataEntry 3 }
+
+saDbStatOID                    OBJECT-TYPE
+    SYNTAX                      AutonomousType
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "OID of the entry in the SA MIB."
+    ::= { saDbStatMetaDataEntry 4 }
+
+saDbStatName                   OBJECT-TYPE
+    SYNTAX                      DisplayString
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Name of the statistic, property, or option."
+    ::= { saDbStatMetaDataEntry 5 }
+
+-- Database properties
+
+saDbPropMetaDataTable          OBJECT-TYPE
+    SYNTAX                      SEQUENCE OF SaDbPropMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "The table of server statistics and properties available"
+    ::= { saDbMetaData 2 }
+
+saDbPropMetaDataEntry          OBJECT-TYPE
+    SYNTAX                      SaDbPropMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "An entry for a single server statistic or property."
+    INDEX { saDbPropIndex }
+    ::= { saDbPropMetaDataTable 1 }
+
+SaDbPropMetaDataEntry ::=
+    SEQUENCE {
+	saDbPropIndex          Integer32,
+	saDbPropObjType        INTEGER,
+	saDbPropType           INTEGER,
+	saDbPropOID            AutonomousType,
+	saDbPropName           DisplayString
+    }
+
+saDbPropIndex                  OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "Index of value."
+    ::= { saDbPropMetaDataEntry 1 }
+
+saDbPropObjType                OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           server(1),
+				   database(2)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of object: (1) server, (2) database. Always 2 for this table."
+    ::= { saDbPropMetaDataEntry 2 }
+
+saDbPropType                   OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           statistic(1),
+				   property(2),
+				   option(3)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of value: (1) statistic, (2) property, (3) option.
+         Always 2 for this table."
+    ::= { saDbPropMetaDataEntry 3 }
+
+saDbPropOID                    OBJECT-TYPE
+    SYNTAX                      AutonomousType
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "OID of the entry in the SA MIB."
+    ::= { saDbPropMetaDataEntry 4 }
+
+saDbPropName                   OBJECT-TYPE
+    SYNTAX                      DisplayString
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Name of the statistic, property, or option."
+    ::= { saDbPropMetaDataEntry 5 }
+
+-- Database options
+
+saDbOptMetaDataTable           OBJECT-TYPE
+    SYNTAX                      SEQUENCE OF SaDbOptMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "The table of server statistics and properties available"
+    ::= { saDbMetaData 3 }
+
+saDbOptMetaDataEntry           OBJECT-TYPE
+    SYNTAX                      SaDbOptMetaDataEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "An entry for a single server statistic or property."
+    INDEX { saDbOptIndex }
+    ::= { saDbOptMetaDataTable 1 }
+
+SaDbOptMetaDataEntry ::=
+    SEQUENCE {
+	saDbOptIndex           Integer32,
+	saDbOptObjType         INTEGER,
+	saDbOptType            INTEGER,
+	saDbOptOID             AutonomousType,
+	saDbOptName            DisplayString
+    }
+
+saDbOptIndex                   OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "Index of value."
+    ::= { saDbOptMetaDataEntry 1 }
+
+saDbOptObjType                 OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           server(1),
+				   database(2)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of object: (1) server, (2) database. Always 2 for this table."
+    ::= { saDbOptMetaDataEntry 2 }
+
+saDbOptType                    OBJECT-TYPE
+    SYNTAX                      INTEGER{
+	                           statistic(1),
+				   property(2),
+				   option(3)
+				   }
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Type of value: (1) statistic, (2) property, (3) option.
+         Always 3 for this table."
+    ::= { saDbOptMetaDataEntry 3 }
+
+saDbOptOID                     OBJECT-TYPE
+    SYNTAX                      AutonomousType
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "OID of the entry in the SA MIB."
+    ::= { saDbOptMetaDataEntry 4 }
+
+saDbOptName                    OBJECT-TYPE
+    SYNTAX                      DisplayString
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "Name of the statistic, property, or option."
+    ::= { saDbOptMetaDataEntry 5 }
+
+--
+-- Traps
+--
+
+saDynamicTrap                  NOTIFICATION-TYPE
+    OBJECTS                     { saDynamicTrapIndex, saDynamicTrapDBIndex, saDynamicTrapTrapIndex }
+    STATUS                      current
+    DESCRIPTION
+        "Signifies that a dynamic trap has occurred"
+    ::= { saTraps 1 }
+
+saDynamicTrapTable             OBJECT-TYPE
+    SYNTAX                      SEQUENCE OF SaDynamicTrapEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "Contains the DB Index and Trap Index values"
+    ::= { saTraps 2 }
+
+saDynamicTrapEntry             OBJECT-TYPE
+    SYNTAX                      SaDynamicTrapEntry
+    MAX-ACCESS                  not-accessible
+    STATUS                      current
+    DESCRIPTION
+        "Contains the trap index, and the DB and trap number of the trap"
+    INDEX { saDynamicTrapIndex }
+    ::= { saDynamicTrapTable 1 }
+
+SaDynamicTrapEntry ::=
+    SEQUENCE {
+	saDynamicTrapIndex     Integer32,
+	saDynamicTrapDBIndex   Integer32,
+        saDynamicTrapDBName    DisplayString,
+	saDynamicTrapTrapIndex Integer32,
+	saDynamicTrapName      DisplayString,
+	saDynamicTrapValue     DisplayString
+    }
+
+saDynamicTrapIndex             OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "The index of the trap."
+    ::= { saDynamicTrapEntry 1 }
+
+saDynamicTrapDBIndex           OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "The index of the Database where the trap occurred."
+    ::= { saDynamicTrapEntry 2 }
+
+saDynamicTrapDBName            OBJECT-TYPE
+    SYNTAX                      DisplayString
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "The name of the Database where the trap occurred."
+    ::= { saDynamicTrapEntry 3 }
+
+saDynamicTrapTrapIndex         OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "The index of the trap within the database."
+    ::= { saDynamicTrapEntry 4 }
+
+saDynamicTrapName              OBJECT-TYPE
+    SYNTAX                      DisplayString
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "The name of the trap."
+    ::= { saDynamicTrapEntry 5 }
+
+saDynamicTrapValue             OBJECT-TYPE
+    SYNTAX                      DisplayString
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "The value of the variable that caused the trap to be sent."
+    ::= { saDynamicTrapEntry 6 }
+
+saMirrorStatusChangedTrap      NOTIFICATION-TYPE
+    OBJECTS                     { saMirrorStatusChangedTrapDBIndex }
+    STATUS                      current
+    DESCRIPTION
+        "Signifies that the mirror server to which the agent was connected
+         has gone down, and that a partner server has taken over. Sent after
+         we are able to reconnect after our connection drops, but we connect to a
+         different server."
+    ::= { saTraps 3 }
+
+saMirrorStatusChangedTrapDBIndex OBJECT-TYPE
+    SYNTAX                      Integer32 (1..2147483647)
+    MAX-ACCESS                  read-only
+    STATUS                      current
+    DESCRIPTION
+        "The index of the Database that had the mirror server failure."
+    ::= { saMirrorStatusChangedTrap 1 }
+
+--
+-- Object groups
+--
+
+saServerStatistics               OBJECT-GROUP
+    OBJECTS {
+        srvStatActiveReq,
+        srvStatAvailIO,
+        srvStatBytesReceived,
+        srvStatBytesReceivedUncomp,
+        srvStatBytesSent,
+        srvStatBytesSentUncomp,
+        srvStatCacheHits,
+        srvStatCachePinned,
+        srvStatCacheRead,
+        srvStatCacheReplacements,
+        srvStatCurrentCacheSize,
+        srvStatDiskRead,
+        srvStatFreeBuffers,
+        srvStatInternal1,
+        srvStatUniqueClientAddresses,
+        srvStatLockedHeapPages,
+        srvStatMainHeapBytes,
+        srvStatMainHeapPages,
+        srvStatMapPhysicalMemoryEng,
+        srvStatMaxCacheSize,
+        srvStatMinCacheSize,
+        srvStatMultiPacketsReceived,
+        srvStatMultiPacketsSent,
+        srvStatPacketsReceived,
+        srvStatPacketsReceivedUncomp,
+        srvStatPacketsSent,
+        srvStatPacketsSentUncomp,
+        srvStatPeakCacheSize,
+        srvStatRemoteputWait,
+        srvStatReq,
+        srvStatSendFail,
+        srvStatTotalBuffers,
+        srvStatUnschReq,
+        srvStatInternal2,
+        srvStatCacheFile,
+        srvStatCacheFileDirty,
+        srvStatCacheAllocated,
+        srvStatCachePanics,
+        srvStatCacheFree,
+        srvStatCacheScavenges,
+        srvStatCacheScavengeVisited,
+        srvStatLockedCursorPages,
+        srvStatQueryHeapPages,
+        srvStatCarverHeapPages,
+        srvStatHeapsRelocatable,
+        srvStatHeapsLocked,
+        srvStatHeapsQuery,
+        srvStatHeapsCarver,
+        srvStatMultiPageAllocs,
+        srvStatRequestsReceived,
+        srvStatExchangeTasks,
+        srvStatClientStmtCacheHits,
+        srvStatClientStmtCacheMisses,
+        srvStatQueryMemActiveCurr,
+        srvStatQueryMemActiveEst,
+        srvStatQueryMemGrantWaiting,
+        srvStatQueryMemGrantRequested,
+        srvStatQueryMemGrantWaited,
+        srvStatQueryMemGrantFailed,
+        srvStatQueryMemGrantGranted,
+        srvStatQueryMemExtraAvail,
+        srvStatThreadDeadlocksAvoided,
+        srvStatThreadDeadlocksReported,
+        srvStatCommit,
+        srvStatCursor,
+        srvStatCursorOpen,
+        srvStatRlbk,
+        srvStatPrepStmt
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of server statistic objects."
+    ::= { saGroups 1 }
+
+saServerProperties               OBJECT-GROUP
+    OBJECTS {
+        srvPropInternal3,
+        srvPropCharSet,
+        srvPropCommandLine,
+        srvPropCompactPlatformVer,
+        srvPropCompanyName,
+        srvPropConnsDisabled,
+        srvPropConsoleLogFile,
+        srvPropDefaultCollation,
+        srvPropIdleTimeout,
+        srvPropIsIQ,
+        srvPropInternal4,
+        srvPropIsNetworkServer,
+        srvPropIsRuntimeServer,
+        srvPropInternal5,
+        srvPropLanguage,
+        srvPropLegalCopyright,
+        srvPropLegalTrademarks,
+        srvPropLicenseCount,
+        srvPropLicensedCompany,
+        srvPropLicensedUser,
+        srvPropLicenseType,
+        srvPropLivenessTimeout,
+        srvPropMachineName,
+        srvPropMaxMessage,
+        srvPropMessageWindowSize,
+        srvPropName,
+        srvPropNativeProcessorArchitecture,
+        srvPropNumPhysicalProcessors,
+        srvPropInternal6,
+        srvPropOmniIdentifier,
+        srvPropPageSize,
+        srvPropPlatform,
+        srvPropPlatformVer,
+        srvPropProcessCPU,
+        srvPropProcessCPUSystem,
+        srvPropProcessCPUUser,
+        srvPropProcessorArchitecture,
+        srvPropProductName,
+        srvPropProductVersion,
+        srvPropQuittingTime,
+        srvPropRememberLastStatement,
+        srvPropRequestFilterConn,
+        srvPropRequestFilterDB,
+        srvPropRequestLogFile,
+        srvPropRequestLogging,
+        srvPropRequestLogMaxSize,
+        srvPropStartTime,
+        srvPropTempDir,
+        srvPropMultiProgrammingLevel,
+        srvPropTimeZoneAdjustment,
+        srvPropHttpPorts,
+        srvPropHttpsPorts,
+        srvPropProfileFilterConn,
+        srvPropProfileFilterUser,
+        srvPropRequestLogNumFiles,
+        srvPropIsFipsAvailable,
+        srvPropFipsMode,
+        srvPropStartDBPermission,
+        srvPropServerName,
+        srvPropRememberLastPlan,
+        srvPropInternal7,
+        srvPropInternal8,
+        srvPropRequestTiming,
+        srvPropCacheSizingStatistics,
+        srvPropConsoleLogMaxSize,
+        srvPropDebuggingInformation,
+        srvPropMessage,
+        srvPropMessageText,
+        srvPropMessageTime,
+        srvPropIsRsaAvailable,
+        srvPropIsEccAvailable,
+        srvPropMaxConnections,
+        srvPropNumLogicalProcessors,
+        srvPropNumLogicalProcessorsUsed,
+        srvPropNumPhysicalProcessorsUsed,
+        srvPropDefaultNcharCollation,
+        srvPropCollectStatistics,
+        srvPropFirstOption,
+        srvPropLastOption,
+        srvPropLastConnectionProperty,
+        srvPropLastDatabaseProperty,
+        srvPropLastServerProperty,
+        srvPropWebClientLogging,
+        srvPropWebClientLogFile,
+        srvPropHttpNumConnections,
+        srvPropHttpsNumConnections,
+        srvPropInternal9,
+        srvPropHttpNumActiveReq,
+        srvPropHttpsNumActiveReq,
+        srvPropHttpNumSessions,
+        srvPropQueryMemPages,
+        srvPropQueryMemGrantBase,
+        srvPropQueryMemGrantBaseMI,
+        srvPropQueryMemGrantExtra,
+        srvPropQueryMemActiveMax,
+        srvPropQueryMemPercentOfCache,
+        srvPropMessageCategoryLimit,
+        srvPropInternal10,
+        srvPropInternal11,
+        srvPropIsService,
+        srvPropTcpIpAddresses,
+        srvPropHttpAddresses,
+        srvPropHttpsAddresses,
+        srvPropProcessID,
+        srvPropRemoteCapability,
+        srvPropMaxRemoteCapability,
+        srvPropEventTypeName,
+        srvPropEventTypeDesc,
+        srvPropMaxEventType,
+        srvPropIsPortableDevice,
+        srvPropIPAddressMonitorPeriod,
+        srvPropServerEdition,
+        srvPropObjectType,
+        srvPropCurrentMultiProgrammingLevel,
+        srvPropMinMultiProgrammingLevel,
+        srvPropMaxMultiProgrammingLevel,
+        srvPropAutoMultiProgrammingLevel,
+        srvPropAutoMultiProgrammingLevelStatistics,
+        srvPropApproximateCPUTime,
+        srvPropConnectedTime,
+        srvPropReqCountUnscheduled,
+        srvPropReqCountActive,
+        srvPropReqCountBlockIO,
+        srvPropReqCountBlockLock,
+        srvPropReqCountBlockContention,
+        srvPropReqTimeUnscheduled,
+        srvPropReqTimeActive,
+        srvPropReqTimeBlockIO,
+        srvPropReqTimeBlockLock,
+        srvPropReqTimeBlockContention,
+        srvPropLicenseKey
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of server property objects."
+    ::= { saGroups 2 }
+
+saDatabaseStatistics             OBJECT-GROUP
+    OBJECTS {
+        dbStatCacheHits,
+        dbStatCacheReadIndInt,
+        dbStatCacheReadIndLeaf,
+        dbStatCacheRead,
+        dbStatCacheReadTable,
+        dbStatChkpt,
+        dbStatChkptFlush,
+        dbStatChkptPage,
+        dbStatCheckpointUrgency,
+        dbStatInternal1,
+        dbStatInternal2,
+        dbStatCheckpointLogCommitToDisk,
+        dbStatCheckpointLogPagesInUse,
+        dbStatCheckpointLogPagesRelocated,
+        dbStatCheckpointLogSavePreimage,
+        dbStatCheckpointLogSize,
+        dbStatCheckpointLogWrites,
+        dbStatCheckpointLogPagesWritten,
+        dbStatCommitFile,
+        dbStatConnCount,
+        dbStatCurrIO,
+        dbStatCurrRead,
+        dbStatCurrWrite,
+        dbStatDiskReadIndInt,
+        dbStatDiskReadIndLeaf,
+        dbStatDiskRead,
+        dbStatDiskReadTable,
+        dbStatDiskWrite,
+        dbStatExtendDB,
+        dbStatExtendTempWrite,
+        dbStatFullCompare,
+        dbStatGetData,
+        dbStatIdleCheck,
+        dbStatIdleChkpt,
+        dbStatIdleChkTime,
+        dbStatIdleWrite,
+        dbStatIndAdd,
+        dbStatIndLookup,
+        dbStatIOToRecover,
+        dbStatInternal3,
+        dbStatInternal4,
+        dbStatLockTablePages,
+        dbStatInternal5,
+        dbStatMaxIO,
+        dbStatMaxRead,
+        dbStatMaxWrite,
+        dbStatPageRelocations,
+        dbStatProcedurePages,
+        dbStatQueryCachePages,
+        dbStatQueryLowMemoryStrategy,
+        dbStatQueryRowsMaterialized,
+        dbStatRecoveryUrgency,
+        dbStatLogFreeCommit,
+        dbStatLogWrite,
+        dbStatRelocatableHeapPages,
+        dbStatRollbackLogPages,
+        dbStatTempTablePages,
+        dbStatTriggerPages,
+        dbStatViewPages,
+        dbStatVersionStorePages,
+        dbStatSnapshotCount,
+        dbStatLockCount,
+        dbStatCacheReadWorkTable,
+        dbStatDiskReadWorkTable,
+        dbStatPrepares,
+        dbStatConnPoolCachedCount,
+        dbStatConnPoolHits,
+        dbStatConnPoolMisses,
+        dbStatHttpConnPoolCachedCount,
+        dbStatHttpConnPoolHits,
+        dbStatHttpConnPoolMisses,
+        dbStatHttpConnPoolSteals,
+        dbStatMirrorServerWaits,
+        dbStatBytesReceived,
+        dbStatBytesReceivedUncomp,
+        dbStatBytesSent,
+        dbStatBytesSentUncomp,
+        dbStatCarverHeapPages,
+        dbStatClientStmtCacheHits,
+        dbStatClientStmtCacheMisses,
+        dbStatCommit,
+        dbStatCursor,
+        dbStatHeapsCarver,
+        dbStatHeapsLocked,
+        dbStatHeapsQuery,
+        dbStatHeapsRelocatable,
+        dbStatCursorOpen,
+        dbStatPacketsReceived,
+        dbStatPacketsReceivedUncomp,
+        dbStatPacketsSent,
+        dbStatPacketsSentUncomp,
+        dbStatQueryHeapPages,
+        dbStatQueryMemActiveCurr,
+        dbStatQueryMemGrantFailed,
+        dbStatQueryMemGrantGranted,
+        dbStatQueryMemGrantRequested,
+        dbStatQueryMemGrantWaited,
+        dbStatQueryMemGrantWaiting,
+        dbStatRequestsReceived,
+        dbStatRlbk,
+        dbStatPrepStmt
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of database statistic objects."
+    ::= { saGroups 3 }
+
+saDatabaseProperties             OBJECT-GROUP
+    OBJECTS {
+        dbPropAlias,
+        dbPropAuditingTypes,
+        dbPropBlankPadding,
+        dbPropInternal6,
+        dbPropCapabilities,
+        dbPropCaseSensitive,
+        dbPropInternal7,
+        dbPropCharSet,
+        dbPropChecksum,
+        dbPropInternal8,
+        dbPropCollation,
+        dbPropInternal9,
+        dbPropInternal10,
+        dbPropCurrentRedoPos,
+        dbPropDBFileFragments,
+        dbPropDriveType,
+        dbPropEncryption,
+        dbPropFile,
+        dbPropFileSize,
+        dbPropInternal11,
+        dbPropInternal12,
+        dbPropFreePages,
+        dbPropGlobalDBID,
+        dbPropInternal13,
+        dbPropInternal14,
+        dbPropInternal15,
+        dbPropIQStore,
+        dbPropInternal16,
+        dbPropLanguage,
+        dbPropInternal17,
+        dbPropLogFileFragments,
+        dbPropLogMirrorName,
+        dbPropLogName,
+        dbPropLTMGeneration,
+        dbPropLTMTrunc,
+        dbPropMultiByteCharSet,
+        dbPropName,
+        dbPropInternal18,
+        dbPropPageSize,
+        dbPropInternal19,
+        dbPropProcedureProfiling,
+        dbPropReadOnly,
+        dbPropRemoteTrunc,
+        dbPropInternal20,
+        dbPropInternal21,
+        dbPropInternal22,
+        dbPropSyncTrunc,
+        dbPropInternal23,
+        dbPropInternal24,
+        dbPropTempFileName,
+        dbPropInternal25,
+        dbPropInternal26,
+        dbPropInternal27,
+        dbPropNextScheduleTime,
+        dbPropIdentitySignature,
+        dbPropInternal28,
+        dbPropSnapshotIsolationState,
+        dbPropConnsDisabled,
+        dbPropPartnerState,
+        dbPropArbiterState,
+        dbPropMirrorState,
+        dbPropAlternateServerName,
+        dbPropEncryptionScope,
+        dbPropNcharCharSet,
+        dbPropNcharCollation,
+        dbPropAccentSensitive,
+        dbPropSendingTracingTo,
+        dbPropReceivingTracingFrom,
+        dbPropIOParallelism,
+        dbPropJavaVM,
+        dbPropDatabaseCleaner,
+        dbPropHasCollationTailoring,
+        dbPropCatalogCollation,
+        dbPropHasEndianSwapFix,
+        dbPropAlternateMirrorServerName,
+        dbPropOptionWatchList,
+        dbPropOptionWatchAction,
+        dbPropMirrorMode,
+        dbPropHasNCHARLegacyCollationFix,
+        dbPropInternal29,
+        dbPropAuthenticated,
+        dbPropSynchronizationSchemaChangeActive,
+        dbPropLastCheckpointTime,
+        dbPropMirrorServerState,
+        dbPropDriveBus,
+        dbPropDriveModel,
+        dbPropInternal30,
+        dbPropMirrorRole,
+        dbPropWriteChecksum,
+        dbPropApproximateCPUTime,
+        dbPropConnectedTime,
+        dbPropReqCountUnscheduled,
+        dbPropReqCountActive,
+        dbPropReqCountBlockIO,
+        dbPropReqCountBlockLock,
+        dbPropReqCountBlockContention,
+        dbPropReqTimeUnscheduled,
+        dbPropReqTimeActive,
+        dbPropReqTimeBlockIO,
+        dbPropReqTimeBlockLock,
+        dbPropReqTimeBlockContention,
+        dbPropInternal31,
+        dbPropLastCommitRedoPos,
+        dbPropLastWrittenRedoPos,
+        dbPropLastSyncedRedoPos
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of database property objects."
+    ::= { saGroups 4 }
+
+saDatabaseOptions                OBJECT-GROUP
+    OBJECTS {
+        dbOptAllowNullsByDefault,
+        dbOptAnsinull,
+        dbOptAnsiBlanks,
+        dbOptAnsiCloseCursorsOnRollback,
+        dbOptInternal32,
+        dbOptAnsiPermissions,
+        dbOptAnsiUpdateConstraints,
+        dbOptAuditing,
+        dbOptAuditingOptions,
+        dbOptInternal33,
+        dbOptBackgroundPriority,
+        dbOptBlocking,
+        dbOptBlockingTimeout,
+        dbOptChained,
+        dbOptCheckpointTime,
+        dbOptCisOption,
+        dbOptCisRowsetSize,
+        dbOptCloseOnEndtrans,
+        dbOptConnectionAuthentication,
+        dbOptContinueAfterRaiserror,
+        dbOptConversionError,
+        dbOptCooperativeCommits,
+        dbOptCooperativeCommitTimeout,
+        dbOptDatabaseAuthentication,
+        dbOptDateFormat,
+        dbOptDateOrder,
+        dbOptDebugMessages,
+        dbOptDedicatedTask,
+        dbOptDefaultTimestampIncrement,
+        dbOptDelayedCommits,
+        dbOptDelayedCommitTimeout,
+        dbOptDivideByZeroError,
+        dbOptEscapeCharacter,
+        dbOptExcludeOperators,
+        dbOptExtendedJoinSyntax,
+        dbOptFireTriggers,
+        dbOptFirstDayOfWeek,
+        dbOptInternal34,
+        dbOptForceViewCreation,
+        dbOptForXmlNullTreatment,
+        dbOptGlobalDatabaseId,
+        dbOptIsolationLevel,
+        dbOptInternal35,
+        dbOptInternal36,
+        dbOptInternal37,
+        dbOptInternal38,
+        dbOptLockRejectedRows,
+        dbOptLoginMode,
+        dbOptLoginProcedure,
+        dbOptInternal39,
+        dbOptInternal40,
+        dbOptMaxCursorCount,
+        dbOptMaxHashSize,
+        dbOptMaxPlansCached,
+        dbOptMaxRecursiveIterations,
+        dbOptMaxStatementCount,
+        dbOptInternal41,
+        dbOptMinPasswordLength,
+        dbOptInternal42,
+        dbOptNearestCentury,
+        dbOptNonKeywords,
+        dbOptOdbcDistinguishCharAndVarchar,
+        dbOptOnCharsetConversionFailure,
+        dbOptOnTsqlError,
+        dbOptInternal43,
+        dbOptOptimizationGoal,
+        dbOptOptimizationLevel,
+        dbOptInternal44,
+        dbOptOptimizationWorkload,
+        dbOptPinnedCursorPercentOfCache,
+        dbOptPrecision,
+        dbOptPrefetch,
+        dbOptPreserveSourceFormat,
+        dbOptPreventArticlePkeyUpdate,
+        dbOptInternal45,
+        dbOptQuotedIdentifier,
+        dbOptReadPastDeleted,
+        dbOptRecoveryTime,
+        dbOptReplicateAll,
+        dbOptReturnDateTimeAsString,
+        dbOptInternal46,
+        dbOptInternal47,
+        dbOptRowCounts,
+        dbOptScale,
+        dbOptSortCollation,
+        dbOptSqlFlaggerErrorLevel,
+        dbOptSqlFlaggerWarningLevel,
+        dbOptStringRtruncation,
+        dbOptSubsumeRowLocks,
+        dbOptSuppressTdsDebugging,
+        dbOptTdsEmptyStringIsNull,
+        dbOptInternal48,
+        dbOptInternal49,
+        dbOptInternal50,
+        dbOptTimestampFormat,
+        dbOptTimeFormat,
+        dbOptTimeZoneAdjustment,
+        dbOptInternal51,
+        dbOptTruncateTimestampValues,
+        dbOptInternal52,
+        dbOptInternal53,
+        dbOptTsqlVariables,
+        dbOptUpdateStatistics,
+        dbOptUpgradeDatabaseCapability,
+        dbOptUserEstimates,
+        dbOptWaitForCommit,
+        dbOptTempSpaceLimitCheck,
+        dbOptRemoteIdleTimeout,
+        dbOptAnsiSubstring,
+        dbOptOdbcDescribeBinaryAsVarbinary,
+        dbOptRollbackOnDeadlock,
+        dbOptIntegratedServerName,
+        dbOptLogDeadlocks,
+        dbOptInternal54,
+        dbOptWebserviceNamespaceHost,
+        dbOptMaxQueryTasks,
+        dbOptRequestTimeout,
+        dbOptSynchronizeMirrorOnCommit,
+        dbOptHttpSessionTimeout,
+        dbOptUuidHasHyphens,
+        dbOptAllowSnapshotIsolation,
+        dbOptVerifyPasswordFunction,
+        dbOptDefaultDbspace,
+        dbOptCollectStatisticsOnDmlUpdates,
+        dbOptInternal55,
+        dbOptJavaLocation,
+        dbOptOemString,
+        dbOptMaxTempSpace,
+        dbOptSecureFeatureKey,
+        dbOptMaterializedViewOptimization,
+        dbOptUpdatableStatementIsolation,
+        dbOptTsqlOuterJoins,
+        dbOptPostLoginProcedure,
+        dbOptConnAuditing,
+        dbOptInternal56,
+        dbOptJavaVmOptions,
+        dbOptInternal57,
+        dbOptMaxClientStatementsCached,
+        dbOptQueryMemTimeout,
+        dbOptAllowReadClientFile,
+        dbOptAllowWriteClientFile,
+        dbOptPriority,
+        dbOptMaxPriority,
+        dbOptProgressMessages,
+        dbOptBlockingOthersTimeout,
+        dbOptInternal58,
+        dbOptTimestampWithTimeZoneFormat,
+        dbOptHttpConnectionPoolTimeout,
+        dbOptHttpConnectionPoolBasesize,
+        dbOptStGeometryDescribeType,
+        dbOptStGeometryAstextFormat,
+        dbOptStGeometryAsbinaryFormat,
+        dbOptStGeometryAsxmlFormat,
+        dbOptReservedKeywords,
+        dbOptStGeometryOnInvalid,
+        dbOptInternal59,
+        dbOptInternal60,
+        dbOptJavaClassPath,
+        dbOptStGeometryInterpolation
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of database option objects."
+    ::= { saGroups 5 }
+
+saTrapGroup                      NOTIFICATION-GROUP
+    NOTIFICATIONS {
+          saDynamicTrap,
+	  saMirrorStatusChangedTrap
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of traps."
+    ::= { saGroups 6 }
+
+saTrapInfoGroup                  OBJECT-GROUP
+    OBJECTS {
+          saMirrorStatusChangedTrapDBIndex,
+	  saDynamicTrapIndex,
+	  saDynamicTrapDBIndex,
+	  saDynamicTrapDBName,
+	  saDynamicTrapTrapIndex,
+	  saDynamicTrapName,
+	  saDynamicTrapValue
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of trap objects."
+    ::= { saGroups 7 }
+
+saAgentGroup                     OBJECT-GROUP
+    OBJECTS {
+          saVersion,
+	  saDBConnStr,
+	  saConnected,
+	  saStarted,
+	  saProc,
+	  saRestart,
+	  saInifile
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of agent objects."
+    ::= { saGroups 8 }
+
+saMetaDataGroup                  OBJECT-GROUP
+    OBJECTS {
+	saSrvStatObjType,
+	saSrvStatType,
+	saSrvStatOID,
+	saSrvStatName,
+	saSrvPropObjType,
+	saSrvPropType,
+	saSrvPropOID,
+	saSrvPropName,
+	saDbStatObjType,
+	saDbStatType,
+	saDbStatOID,
+	saDbStatName,
+	saDbPropObjType,
+	saDbPropType,
+	saDbPropOID,
+	saDbPropName,
+	saDbOptObjType,
+	saDbOptType,
+	saDbOptOID,
+	saDbOptName
+    }
+    STATUS                       current
+    DESCRIPTION
+        "The collection of metadata objects."
+    ::= { saGroups 9 }
+
+END
