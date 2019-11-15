@@ -1,4 +1,4 @@
--- PURPOSE: Grant scripts to necessary database objects in RPS
+-- PURPOSE: Grant permissions to necessary database objects in RPS
 
 -- USAGE: Replace <replace_with_password> with the desired password and 
 --        run script via Sybase Interactive SQL while connected to RPS database
