@@ -49,5 +49,5 @@
 
 7. If the settings test passes, save the settings, else return to step 5
 
-8. Install mobile app on the tablet by transferring ./AppInstallers/MobileAppInstaller/Outpost_v4.0.0.apk to the tablet, and launching the installer by double-tapping its icon.
+8. Install mobile app on the tablet by transferring ./AppInstallers/MobileAppInstaller/OA_v4.0.0.apk to the tablet, and launching the installer by double-tapping its icon.
   
