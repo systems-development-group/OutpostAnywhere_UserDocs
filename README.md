@@ -5,6 +5,7 @@
 * PC targeted for installation of OA desktop app needs to have a 64-bit ODBC connection to the Sybase Sql Anywhere 12 instance that houses the RPS data. (**For security reasons, that ODBC connection should not connect as a user that has DBA privileges on the database**)  
   * [Click here for info on creating a database user with the minimum necessary privileges](./DB_USER.md)
   * [Click here for info on registering the SqlAnywhere ODBC driver](./ODBC_DRIVER.md) 
+  * [Click here for info on creating an ODBC Connection](./PrerequisiteHelpers/ODBC_Creation.pdf) 
 
 * User of PC targeted for installation of OA desktop app needs to have permissions to edit the RPS image set.
 
