@@ -35,20 +35,29 @@
 
 **Instructions**
 
-1. Test 64-bit ODBC To RPS (see above prerequisites for more info)
+0. Clone this repo or download it as a .zip (see green button above), unzip if necessary, and cd into the resulting dir.
 
-2. Test user's connection to access and modify RPS images and directories.
+1. Test the 64-bit ODBC To RPS using the ODBC Data Source Administrator (64-bit). See above prerequisites if you need more info about configuring this connection.
+
+2. Verify that user can read and modify RPS images and directories.
 
 3. Install desktop app by running ./AppInstallers/DesktopAppInstaller/setup.exe on the PC 
     <br>(This step may require administrative privileges)
 
-4. Open desktop app's config dialog
+4. Optional: After the app auto-opens, pin OA Bridge to the user's taskbar.
 
-5. Input config values(dsn, license key, etc...)
+5. Open Outpost Anywhere Bridge app's config dialog
 
-6. Test settings
+6. Input config values(ODBC DSN, license key, etc...)
 
-7. If the settings test passes, save the settings, else return to step 5
+7. Test settings
 
-8. Install mobile app on the tablet by transferring ./AppInstallers/MobileAppInstaller/OA_v4.0.0.apk to the tablet, and launching the installer by double-tapping its icon.
+8. If the settings test passes, save the settings, else return to step 6
+
+9. Verify that you've satisifed the tablet pre-requisites (see above section)
+
+10. Install the mobile app on the tablet by transferring ./AppInstallers/MobileAppInstaller/OA_v4.0.0.apk to the tablet, and launching the installer by double-tapping its icon.
   
+11. Connect tablet with PC via USB. When tablet displays the 'Allow access to your data' dialog, select 'Allow'. If this doesn't happen, the customer's IT will need to determine the cause.
+
+12. Open File Explorer > 'This PC' > Select the tablet from the 'Devices and Drives' section. You should see the device's 'Internal shared storage'. If not, the customer's IT will need to address.
