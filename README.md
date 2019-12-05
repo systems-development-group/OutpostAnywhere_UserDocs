@@ -1,7 +1,7 @@
 # Outpost Anywhere v4 (OA)
 
 **PC Prerequisites:**
-* PC targeted for installation of OA desktop app needs to be able to interface with Android devices over MTP. To test compatibility, connect the tablet to the PC, and attempt to read the tablet's filesystem in File Explorer.
+* PC targeted for installation of OA desktop app needs to be capable of interacting with an Android device over USB. To test PC compatibility, connect the PC to an Android device that has been prepared as per the Mobile Device Prerequisites section of this document (see below), and run the Powershell script located [here](./PrerequisiteHelpers/PCToAndroidCompatibility/TestPCToAndroidCompatibility.ps1). After running the script, you should a device listed below the text 'List of devices attached'. It that script doesn't locate your device, device manager for any missing drivers in the USB sections (highlighted by yellow exclamation points). The customer's IT department will need to resolve any driver issues. In some cases, needed drivers may not be available for the PC in question, so a different PC must be used.
 
 * PC targeted for installation of OA desktop app needs to be able to access RPS images via a mapped drive (this can be ignored if the RPS database is running in a guerilla setup on a laptop).
 
@@ -16,7 +16,7 @@
 
 ---
 
-**Tablet Prerequisites:**
+**Mobile Device Prerequisites:**
 
 * The OA mobile app requires Android 7, 8, or 9 (10 is likely to work also, but is untested)
 
