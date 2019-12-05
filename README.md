@@ -1,5 +1,14 @@
 # Outpost Anywhere v4 (OA)
 
+**Note:**
+* If you choose to run any of the Powershell scripts provided here, you'll need to adjust the local Powershell execution-policy. 
+```powershell
+# To allow scripts provided here to run
+Set-ExecutionPolicy -ExecutionPolicy 'RemoteSigned'
+# To revert setting to default
+Set-ExecutionPolicy -ExecutionPolicy 'Default'
+```
+
 **PC Prerequisites:**
 * **IMPORTANT:** PC targeted for installation of OA desktop app needs to be capable of interacting with an Android device over USB. To test PC compatibility, connect the PC to an Android device that has been prepared as per the Mobile Device Prerequisites section of this document (see below), and run the Powershell script located [here](./PrerequisiteHelpers/PCToAndroidCompatibility/TestPCToAndroidCompatibility.ps1). After running the script, you should a device listed below the text 'List of devices attached'. It that script doesn't locate your device, check Device Manager for any missing drivers in the USB sections (highlighted by yellow exclamation points). The customer's IT department will need to resolve any driver issues. In some cases, needed drivers may not be available for the PC in question, so a different PC must be used.
 
