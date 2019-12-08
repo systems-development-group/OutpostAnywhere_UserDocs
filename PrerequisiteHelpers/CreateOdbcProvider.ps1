@@ -1,6 +1,7 @@
-# NOTE: Script must run as an admin that has elevated privs on the local machine 
 # NOTE: Script must run from $PSScriptRoot 
 #       (the same directory containing bin directory, which containins the driver artifacts)
+
+#Requires -RunAsAdministrator
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop";

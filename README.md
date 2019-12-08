@@ -21,8 +21,6 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 
 * User of PC targeted for installation of OA desktop app needs to have permissions to edit the RPS image set.
 
-* PC targeted for install of OA desktop app should be running a currently supported version of Windows 10 that is capable of communicating with Android devices over MTP.
-
 ---
 
 **Mobile Device Prerequisites:**
