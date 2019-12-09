@@ -19,7 +19,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
   * [Click here for info on registering the SqlAnywhere ODBC driver](./ODBC_DRIVER.md) 
   * [Click here for info on creating an ODBC Connection](./PrerequisiteHelpers/ODBC_Creation.pdf) 
 
-* User of PC targeted for installation of OA desktop app needs to have permissions to edit the RPS image set.
+* User of PC targeted for installation of OA desktop app need to have permissions to edit the RPS image set via a mapped drive present on the PC targeted for installation of the desktop app. In addition to READ/WRITE/MODIFY being granted in the Properties' Security tab, the shared drive must be configured to allowing changing of files.
 
 ---
 

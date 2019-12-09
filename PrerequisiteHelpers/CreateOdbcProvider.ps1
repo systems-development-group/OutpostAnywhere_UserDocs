@@ -40,7 +40,7 @@ function CreateFilePointerKeys(
         Write-Host "The key does not yet exist: $DriverFilePointersKey"
     }
     New-Item -Path  $DriverFilePointersKey 
-    # And then set it's sub-key values
+    # And then set its sub-key values
     Set-ItemProperty -path $DriverFilePointersKey -Name 'Driver' -Value "$fileLocation\$dllParent\$dll" -Verbose
     Set-ItemProperty -path $DriverFilePointersKey -Name 'Setup' -Value "$fileLocation\$dllParent\$dll" -Verbose    
 }
