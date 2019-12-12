@@ -12,7 +12,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 **PC Prerequisites:**
 * **IMPORTANT:** PC targeted for installation of OA desktop app needs to be capable of interacting with an Android device over USB. To test PC compatibility, connect the PC to an Android device(via USB) that has been prepared as per the Mobile Device Prerequisites section of this document (see below), and run the Powershell script located [here](./PrerequisiteHelpers/PCToAndroidCompatibility/TestPCToAndroidCompatibility.ps1). After running the script, you should a device listed below the text 'List of devices attached'. It that script doesn't locate your device, check Device Manager for any missing drivers in the USB sections (highlighted by yellow exclamation points). The customer's IT department will need to resolve any driver issues. In some cases, needed drivers may not be available for the PC in question, so a different PC must be used.
 
-* PC targeted for installation of OA desktop app needs to be able to access RPS images via a mapped drive (this can be ignored if the RPS database is running in a guerilla setup on a laptop).
+* PC targeted for installation of OA desktop app needs to be able to access RPS images via a mapped drive. This implies that RPS images must be exposed via a drive shared on the network.
 
 * PC targeted for installation of OA desktop app needs to have a 64-bit ODBC connection to the Sybase Sql Anywhere 12 instance that houses the RPS data. (**For security reasons, that ODBC connection should not connect as a user that has DBA privileges on the database**)  
   * [Click here for info on creating a database user with the minimum necessary privileges](./DB_USER.md)
@@ -56,7 +56,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 
 4. Optional: After the app auto-opens, pin OA Bridge to the user's taskbar.
 
-5. Open Outpost Anywhere Bridge app's config dialog
+5. Open Outpost Anywhere Bridge app's 'Config' dialog
 
 6. Input config values(ODBC DSN, license key, etc...)
 
