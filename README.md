@@ -49,7 +49,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 
 1. Test the 64-bit ODBC To RPS using the ODBC Data Source Administrator (64-bit). See above prerequisites if you need more info about configuring this connection.
 
-2. Verify that user can read and modify RPS images and directories.
+2. Verify that user can read and modify RPS images and directories via a mapped drive. For info on creating a mapped drive, see the script [here](./PrerequisiteHelpers/MapRpsImagePath.ps1)
 
 3. Install desktop app by running ./AppInstallers/DesktopAppInstaller/setup.exe on the PC 
     <br>(This step may require administrative privileges)

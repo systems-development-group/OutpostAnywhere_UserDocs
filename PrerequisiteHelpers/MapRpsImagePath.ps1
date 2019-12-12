@@ -1,4 +1,3 @@
-# NOTE: YMMV
 # USAGE: .\MapRpsImagePath.ps1 -desiredDriveLetter 'H' -pathToRpsImageRoot '\\hpelitedesk1\RPSIMAGES\Rye\Photos\VOLLOCAL'
 
 param(
