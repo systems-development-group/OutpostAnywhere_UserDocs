@@ -29,19 +29,25 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 
 * The OA mobile app requires Android 7, 8, or 9 (10 is likely to work also, but is untested)
 
-* Chrome and Android Webview (if present) should be updated to current versions 
+* Chrome and Android Webview (if present) should be updated to current versions. This is done in the Play Store.
 
-* Developer mode should be enabled
+* Developer mode should be enabled. <br>
+(Settings > About > Software > Tap build number repeatedly)
 
-* Webview implementation should be using 'Chrome Stable' (in Developer options)
+* Webview implementation should be using 'Chrome Stable' <br>
+(found in Settings > Developer options)
 
-* Automatic System updates should be turned on (in Developer options)
+* Automatic System updates should be turned on 
+<br> (found in Settings > Developer options)
 
-* USB Debugging should be enabled (in Developer options)
+* USB Debugging should be enabled 
+<br> (found in Settings > Developer options)
 
-* Verify apps over USB should be enabled (in Developer options)
+* Verify apps over USB should be enabled 
+<br> (found in Settings > Developer options)
 
-* Select USB Configuration should be set to MTP (in Developer options)
+* Select USB Configuration should be set to MTP 
+<br> (found in Settings > Developer options)
 
 ---
 
