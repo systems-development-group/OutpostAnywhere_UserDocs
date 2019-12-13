@@ -21,7 +21,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 
 * User of PC targeted for installation of OA desktop app need to have permissions to edit the RPS image set via a mapped drive present on the PC targeted for installation of the desktop app. In addition to READ/WRITE/MODIFY being granted in the Properties' Security tab, the shared drive must be configured to allowing changing of files.
 
-* User(s) of PC targeted for installation of OA desktop app need to have an RPSv4 login that has CREATE, UPDATE, and DELETE permissions in RPSv4's database application(See the three columns located in the table DBA.USER_PROFILE)
+* User(s) of PC targeted for installation of OA desktop app need to have an RPSv4 login that has CREATE, UPDATE, and DELETE permissions in RPSv4's database application (see the three columns located in the table DBA.USER_PROFILE)
 
 ---
 
