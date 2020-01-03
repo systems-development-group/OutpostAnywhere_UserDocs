@@ -26,6 +26,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 ---
 
 **Mobile Device Prerequisites:**
+* Connecting the PC to the mobile device requires a USB cable capable of data transfer. (Also, it's recommended that the mobile device and cable use USB 3.0 or USB 3.1 due to the faster maximum data transfer speeds.)
 
 * The OA mobile app requires Android 7, 8, or 9 (10 is likely to work also, but is untested)
 
