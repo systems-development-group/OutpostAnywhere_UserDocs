@@ -47,7 +47,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 * Verify apps over USB should be enabled 
 <br> (found in Settings > Developer options)
 
-* Select USB Configuration should be set to MTP 
+* Select USB Configuration (if present) should be set to MTP 
 <br> (found in Settings > Developer options)
 
 ---
