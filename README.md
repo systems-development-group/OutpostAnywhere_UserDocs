@@ -1,7 +1,7 @@
 # Outpost Anywhere v4 (OA)
 
 **Note:**
-* If you choose to run any of the Powershell scripts provided here, you'll need to adjust the local Powershell execution-policy (which will require an administrative account). 
+* If you choose to run any of the Powershell scripts provided here, you may need to adjust the local Powershell execution-policy (which will require an administrative account). 
 ```powershell
 # To allow scripts provided here to run
 Set-ExecutionPolicy -ExecutionPolicy 'RemoteSigned'
