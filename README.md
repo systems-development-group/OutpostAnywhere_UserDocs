@@ -35,7 +35,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 * Developer mode should be enabled. <br>
 (Settings > About > Software > Tap build number repeatedly)
 
-* Webview implementation should be using 'Chrome Stable' <br>
+* Webview implementation (if present) should be using 'Chrome Stable' <br>
 (found in Settings > Developer options)
 
 * Automatic System updates should be turned on 
