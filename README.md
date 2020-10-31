@@ -14,7 +14,7 @@ Set-ExecutionPolicy -ExecutionPolicy 'Default'
 
 * PC targeted for installation of OA desktop app needs to be able to access RPS images via a mapped drive. This implies that RPS images must be exposed via a drive shared on the network.
 
-* PC targeted for installation of OA desktop app needs to have a 64-bit ODBC connection to the Sybase Sql Anywhere 12 instance that houses the RPS data. (**For security reasons, that ODBC connection should not connect as a user that has DBA privileges on the database**)  
+* PC targeted for installation of OA desktop app needs to have a 64-bit ODBC connection to the Sybase Sql Anywhere 12 database instance that houses the RPS data. (**For security reasons, that ODBC connection should not connect as a user that has DBA privileges on the database**)  
   * [Click here for info on creating a database user with the minimum necessary privileges](./DB_USER.md)
   * [Click here for info on registering the SqlAnywhere ODBC driver](./ODBC_DRIVER.md) 
   * [Click here for info on creating an ODBC Connection](./PrerequisiteHelpers/ODBC_Creation.pdf) 
